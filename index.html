@@ -78,6 +78,7 @@
 
     .title.visible {
       opacity: 1;
+      text-shadow: 0 0 30px rgba(212,160,23,0.15), 0 0 60px rgba(212,160,23,0.08);
     }
 
     .tagline {
@@ -382,10 +383,10 @@
         const py = baseY + ny * wobble;
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
-      ctx.shadowColor = `rgba(255,190,0,${glow * 0.5})`;
-      ctx.shadowBlur = 60;
-      ctx.strokeStyle = `rgba(212,160,23,${glow * 0.18})`;
-      ctx.lineWidth = 18;
+      ctx.shadowColor = `rgba(255,190,0,${glow * 0.6})`;
+      ctx.shadowBlur = 80;
+      ctx.strokeStyle = `rgba(212,160,23,${glow * 0.2})`;
+      ctx.lineWidth = 22;
       ctx.stroke();
       ctx.restore();
 
@@ -455,10 +456,11 @@
       }
     }
 
-    // Glowing node at vertex where segments connect
-    function drawVertexNode(x, y, intensity) {
+    // === ENERGY FLARE at vertex — starburst with radiating spikes ===
+    function drawVertexFlare(x, y, intensity, vertIdx) {
       if (intensity < 0.01) return;
-      const bt = elapsed() % 2.4;
+      const t = elapsed();
+      const bt = t % 2.4;
       let beat = 0;
       if (bt < 0.15) beat = bt / 0.15;
       else if (bt < 0.3) beat = 1 - (bt - 0.15) / 0.15;
@@ -466,25 +468,86 @@
       else if (bt < 0.8) beat = 1 - (bt - 0.5) / 0.3;
       const glow = intensity * (0.5 + 0.5 * beat);
 
-      // Outer bloom
+      // Large soft bloom (the energy concentration)
       ctx.save();
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, 35 * intensity);
+      grad.addColorStop(0, `rgba(255,220,80,${glow * 0.4})`);
+      grad.addColorStop(0.4, `rgba(255,190,30,${glow * 0.12})`);
+      grad.addColorStop(1, `rgba(255,160,0,0)`);
       ctx.beginPath();
-      ctx.arc(x, y, 12, 0, Math.PI * 2);
-      ctx.shadowColor = `rgba(255,200,50,${glow * 0.6})`;
-      ctx.shadowBlur = 40;
-      ctx.fillStyle = `rgba(255,190,0,${glow * 0.1})`;
+      ctx.arc(x, y, 35 * intensity, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
       ctx.fill();
       ctx.restore();
 
-      // Bright core dot
+      // Radiating spikes (starburst) — 5-7 short rays emanating from vertex
+      const spikeCount = 5 + (vertIdx % 3);
+      for (let s = 0; s < spikeCount; s++) {
+        const angle = (s / spikeCount) * Math.PI * 2 + vertIdx * 0.8 + t * 0.3;
+        const spikeLen = (12 + Perlin.noise2D(s + vertIdx * 10, t * 0.8) * 10) * intensity;
+        const sx = x + Math.cos(angle) * spikeLen;
+        const sy = y + Math.sin(angle) * spikeLen;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(sx, sy);
+        ctx.lineCap = 'round';
+        ctx.shadowColor = `rgba(255,220,100,${glow * 0.5})`;
+        ctx.shadowBlur = 8;
+        ctx.strokeStyle = `rgba(255,210,60,${glow * 0.4})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Bright core — tiny hot center
       ctx.save();
       ctx.beginPath();
-      ctx.arc(x, y, 3, 0, Math.PI * 2);
-      ctx.shadowColor = `rgba(255,230,100,${glow})`;
-      ctx.shadowBlur = 15;
-      ctx.fillStyle = `rgba(255,220,80,${glow * 0.8})`;
+      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.shadowColor = `rgba(255,240,150,${glow})`;
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = `rgba(255,230,120,${glow * 0.9})`;
       ctx.fill();
       ctx.restore();
+    }
+
+    // === SPARKS — ephemeral electric discharges along beams ===
+    const sparks = [];
+    const MAX_SPARKS = 15;
+
+    function spawnSpark() {
+      if (drawProgress < 0.5) return;
+      // Pick a random point along drawn portions of hexagon
+      const pos = Math.random() * Math.min(drawProgress, 6);
+      const hp = hexPoint(pos / 6, hexSize, centerX, centerY);
+      sparks.push({
+        x: hp.x + (Math.random() - 0.5) * 10,
+        y: hp.y + (Math.random() - 0.5) * 10,
+        life: 1, // 1→0
+        decay: 0.02 + Math.random() * 0.03,
+        size: 1 + Math.random() * 2
+      });
+    }
+
+    function updateAndDrawSparks() {
+      // Spawn new sparks occasionally
+      if (Math.random() < 0.15 && sparks.length < MAX_SPARKS) spawnSpark();
+
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.life -= s.decay;
+        if (s.life <= 0) { sparks.splice(i, 1); continue; }
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+        ctx.shadowColor = `rgba(255,240,150,${s.life * 0.8})`;
+        ctx.shadowBlur = 15;
+        ctx.fillStyle = `rgba(255,230,100,${s.life})`;
+        ctx.fill();
+        ctx.restore();
+      }
     }
 
     function drawHexSegments() {
@@ -495,15 +558,19 @@
         const a = verts[i], b = verts[(i + 1) % 6];
         drawPlasmaBeam(a.x, a.y, b.x, b.y, segProgress, t + i * 7);
 
-        // Draw vertex node at start of segment when beam begins
-        if (segProgress > 0.01) {
-          drawVertexNode(a.x, a.y, Math.min(segProgress * 3, 1));
+        // Flare at start vertex when beam begins
+        if (segProgress > 0.05) {
+          drawVertexFlare(a.x, a.y, Math.min(segProgress * 2, 1), i);
         }
-        // Draw vertex node at end when segment is complete
-        if (segProgress >= 0.98) {
-          drawVertexNode(b.x, b.y, 1);
+        // Flare at end vertex when segment completes
+        if (segProgress >= 0.95) {
+          const endIntensity = Math.min((segProgress - 0.95) / 0.05, 1);
+          drawVertexFlare(b.x, b.y, endIntensity, i + 1);
         }
       }
+
+      // Electric sparks along beams
+      updateAndDrawSparks();
     }
 
     // === TAGLINE TYPEWRITER ===
@@ -548,7 +615,7 @@
       const t = elapsed();
 
       // Soft fade — trail persistence
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
       ctx.fillRect(0, 0, W, H);
 
       // Phase transitions

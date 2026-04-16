@@ -712,18 +712,6 @@
       // Draw hex segments FIRST (behind particles for depth)
       drawHexSegments();
 
-      // Inner vignette glow when hex is substantially formed
-      if (drawProgressCW > 1.5) {
-        const vignetteIntensity = Math.min((drawProgressCW - 1.5) / 1.5, 1) * 0.06;
-        const grad = ctx.createRadialGradient(centerX, centerY, hexSize * 0.3, centerX, centerY, hexSize * 0.95);
-        grad.addColorStop(0, `rgba(0,0,0,0)`);
-        grad.addColorStop(1, `rgba(255,180,30,${vignetteIntensity})`);
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, hexSize, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-      }
-
       // Update and draw particles (bg layer first, then mid, then fg for depth)
       for (const p of particles) { p.update(t); }
       for (const p of particles) { if (p.layer === 'bg' && !p.captured) p.draw(); }

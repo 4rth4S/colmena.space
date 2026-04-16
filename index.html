@@ -98,7 +98,285 @@
   </div>
 
   <script>
-    // JS will be added in subsequent tasks
+    // === PERLIN NOISE ===
+    const Perlin = (() => {
+      const permutation = [];
+      for (let i = 0; i < 256; i++) permutation[i] = i;
+      for (let i = 255; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [permutation[i], permutation[j]] = [permutation[j], permutation[i]];
+      }
+      const p = [...permutation, ...permutation];
+
+      function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      function lerp(a, b, t) { return a + t * (b - a); }
+      function grad(hash, x, y) {
+        const h = hash & 3;
+        const u = h < 2 ? x : -x;
+        const v = h === 0 || h === 3 ? y : -y;
+        return u + v;
+      }
+
+      return {
+        noise2D(x, y) {
+          const xi = Math.floor(x) & 255;
+          const yi = Math.floor(y) & 255;
+          const xf = x - Math.floor(x);
+          const yf = y - Math.floor(y);
+          const u = fade(xf);
+          const v = fade(yf);
+          const aa = p[p[xi] + yi];
+          const ab = p[p[xi] + yi + 1];
+          const ba = p[p[xi + 1] + yi];
+          const bb = p[p[xi + 1] + yi + 1];
+          return lerp(
+            lerp(grad(aa, xf, yf), grad(ba, xf - 1, yf), u),
+            lerp(grad(ab, xf, yf - 1), grad(bb, xf - 1, yf - 1), u),
+            v
+          );
+        }
+      };
+    })();
+
+    // === CANVAS SETUP ===
+    const canvas = document.getElementById('swarm');
+    const ctx = canvas.getContext('2d');
+    let W, H, centerX, centerY;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      centerX = W / 2;
+      centerY = H / 2;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // === CONFIG ===
+    const isMobile = window.innerWidth < 768;
+    const PARTICLE_COUNT = isMobile ? 100 : 180;
+    const MOUSE_REPEL_RADIUS = 80;
+
+    // === ANIMATION PHASES ===
+    const Phase = { DARK: 0, SPAWN: 1, CONVERGE: 2, REVEAL_TITLE: 3, REVEAL_TAGLINE: 4, STEADY: 5 };
+    let phase = Phase.DARK;
+    let startTime = performance.now();
+    function elapsed() { return (performance.now() - startTime) / 1000; }
+
+    // === MOUSE TRACKING ===
+    let mouseX = -9999, mouseY = -9999;
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    document.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+
+    // === PARTICLE ===
+    class Particle {
+      constructor() {
+        // Spawn from a random edge
+        const edge = Math.floor(Math.random() * 4);
+        if (edge === 0) { this.x = Math.random() * W; this.y = -10; }
+        else if (edge === 1) { this.x = W + 10; this.y = Math.random() * H; }
+        else if (edge === 2) { this.x = Math.random() * W; this.y = H + 10; }
+        else { this.x = -10; this.y = Math.random() * H; }
+
+        this.baseSize = 1 + Math.random() * 2;
+        this.size = this.baseSize;
+        this.opacity = 0.3 + Math.random() * 0.5;
+        this.noiseOffsetX = Math.random() * 1000;
+        this.noiseOffsetY = Math.random() * 1000;
+        this.speed = 0.3 + Math.random() * 0.7;
+
+        // Gold-to-amber color
+        const t = Math.random();
+        const r = Math.floor(212 + t * 43);
+        const g = Math.floor(160 + t * 24);
+        const b = Math.floor(23 + t * 0);
+        this.color = `${r},${g},${b}`;
+
+        // Trail
+        this.prevX = this.x;
+        this.prevY = this.y;
+
+        this.alive = false;
+      }
+
+      update(t) {
+        if (!this.alive) return;
+
+        this.prevX = this.x;
+        this.prevY = this.y;
+
+        // Perlin noise drift
+        const nx = Perlin.noise2D(this.noiseOffsetX + t * 0.3, this.noiseOffsetY) * 2;
+        const ny = Perlin.noise2D(this.noiseOffsetY + t * 0.3, this.noiseOffsetX) * 2;
+
+        this.x += nx * this.speed;
+        this.y += ny * this.speed;
+
+        // Central attractor — activates during CONVERGE phase and stays active
+        if (phase >= Phase.CONVERGE) {
+          const ax = centerX - this.x;
+          const ay = centerY - this.y;
+          const aDist = Math.sqrt(ax * ax + ay * ay);
+          if (aDist > 0) {
+            let attractStrength;
+            if (phase === Phase.CONVERGE) {
+              const convergeT = Math.min((elapsed() - 3) / 1.5, 1);
+              attractStrength = convergeT * 1.2;
+            } else {
+              // Orbital: weaker pull + tangential drift keeps particles circling
+              attractStrength = 0.15;
+              const tangentX = -ay / aDist * 0.5 * this.speed;
+              const tangentY = ax / aDist * 0.5 * this.speed;
+              this.x += tangentX;
+              this.y += tangentY;
+            }
+            this.x += (ax / aDist) * attractStrength;
+            this.y += (ay / aDist) * attractStrength;
+          }
+        }
+
+        // Mouse repulsion
+        const dx = this.x - mouseX;
+        const dy = this.y - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_REPEL_RADIUS && dist > 0) {
+          const force = (MOUSE_REPEL_RADIUS - dist) / MOUSE_REPEL_RADIUS;
+          this.x += (dx / dist) * force * 3;
+          this.y += (dy / dist) * force * 3;
+        }
+
+        // Soft edge wrapping
+        const margin = 50;
+        if (this.x < -margin) this.x = W + margin;
+        if (this.x > W + margin) this.x = -margin;
+        if (this.y < -margin) this.y = H + margin;
+        if (this.y > H + margin) this.y = -margin;
+      }
+
+      draw() {
+        if (!this.alive) return;
+
+        // Trail line (during and after convergence)
+        if (phase >= Phase.CONVERGE) {
+          const dx = this.x - this.prevX;
+          const dy = this.y - this.prevY;
+          const trailLen = Math.sqrt(dx * dx + dy * dy);
+          if (trailLen > 1) {
+            ctx.beginPath();
+            ctx.moveTo(this.prevX, this.prevY);
+            ctx.lineTo(this.x, this.y);
+            ctx.strokeStyle = `rgba(${this.color},${this.opacity * 0.3})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+
+        // Particle dot
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+        ctx.fill();
+
+        // Glow effect on larger particles
+        if (this.size > 2) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${this.color},${this.opacity * 0.08})`;
+          ctx.fill();
+        }
+      }
+    }
+
+    // === CREATE PARTICLES ===
+    const particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new Particle());
+    }
+
+    // === HEXAGON ===
+    function drawHexagon(opacity) {
+      const size = Math.min(W, H) * 0.15;
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 2;
+        const x = Math.cos(angle) * size;
+        const y = Math.sin(angle) * size;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = `rgba(212,160,23,${opacity})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // === TAGLINE TYPEWRITER ===
+    function typeTagline() {
+      const text = 'El enjambre aprende donde picar.';
+      const el = document.getElementById('tagline');
+      let i = 0;
+      const interval = setInterval(() => {
+        el.textContent = text.slice(0, i + 1);
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 50);
+    }
+
+    // === ANIMATION LOOP ===
+    function animate() {
+      const t = elapsed();
+
+      // Soft fade for trail persistence (bloom effect)
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, W, H);
+
+      // Phase transitions
+      if (phase === Phase.DARK && t >= 1.5) {
+        phase = Phase.SPAWN;
+      }
+      if (phase === Phase.SPAWN && t >= 3) {
+        phase = Phase.CONVERGE;
+      }
+      if (phase === Phase.CONVERGE && t >= 4.5) {
+        phase = Phase.REVEAL_TITLE;
+        document.getElementById('title').classList.add('visible');
+      }
+      if (phase === Phase.REVEAL_TITLE && t >= 5.5) {
+        phase = Phase.REVEAL_TAGLINE;
+        typeTagline();
+      }
+      if (phase === Phase.REVEAL_TAGLINE && t >= 6.5) {
+        phase = Phase.STEADY;
+      }
+
+      // Spawn particles gradually during SPAWN phase
+      if (phase >= Phase.SPAWN) {
+        const spawnProgress = Math.min((t - 1.5) / 1.5, 1);
+        const targetAlive = Math.floor(spawnProgress * PARTICLE_COUNT);
+        for (let i = 0; i < targetAlive; i++) {
+          particles[i].alive = true;
+        }
+      }
+
+      // Update and draw particles
+      for (const p of particles) {
+        p.update(t);
+        p.draw();
+      }
+
+      // Draw hexagon during and after convergence
+      if (phase >= Phase.CONVERGE) {
+        const hexOpacity = Math.min((t - 3) / 1.5, 0.4);
+        drawHexagon(hexOpacity);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   </script>
 </body>
 </html>

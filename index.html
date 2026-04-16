@@ -218,7 +218,7 @@
         this.noiseY = Math.random() * 1000;
         this.speed = 0.4 + Math.random() * 0.8;
         this.size = 1 + Math.random() * 2.5;
-        this.opacity = 0.3 + Math.random() * 0.6;
+        this.opacity = 0.5 + Math.random() * 0.5;
         this.trail = [];
         this.maxTrail = 8;
 
@@ -289,8 +289,8 @@
           const ad = Math.sqrt(ax * ax + ay * ay);
           if (ad > 0) {
             const strength = phase === Phase.CONVERGE
-              ? Math.min((elapsed() - 3.5) / 3, 1) * 0.6
-              : 0.08;
+              ? Math.min((elapsed() - 2) / 2, 1) * 0.8
+              : 0.1;
             this.x += (ax / ad) * strength;
             this.y += (ay / ad) * strength;
             // Tangential drift
@@ -337,9 +337,9 @@
 
         // Particle dot with glow
         ctx.save();
-        const glowMult = this.captured ? 1.2 : 0.4;
+        const glowMult = this.captured ? 1.2 : 0.7;
         ctx.shadowColor = `rgba(${col},${0.6 * glowMult})`;
-        ctx.shadowBlur = this.size * (this.captured ? 10 : 3);
+        ctx.shadowBlur = this.size * (this.captured ? 10 : 5);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${col},${this.opacity})`;
@@ -357,9 +357,10 @@
     let capturedCount = 0;
 
     // === HEXAGON DRAW PROGRESS ===
-    // drawProgress: 0→6 — traces around the hexagon perimeter point by point
-    // 0 = nothing, 1 = first segment complete, 2 = second, ... 6 = fully drawn
-    let drawProgress = 0;
+    // Two beams trace simultaneously: one clockwise from top, one counter-clockwise
+    // Each goes 0→3 (half the hex). Together they complete the full hexagon symmetrically.
+    let drawProgressCW = 0;  // clockwise from vertex 0 (top): segments 0,1,2
+    let drawProgressCCW = 0; // counter-clockwise from vertex 0: segments 5,4,3
 
     // === PLASMA BEAM — draws a segment as an energy ray ===
     // progress: 0→1 how much of this segment is drawn (point-by-point reveal)
@@ -534,9 +535,10 @@
     const MAX_SPARKS = isMobile ? 8 : 15;
 
     function spawnSpark() {
-      if (drawProgress < 0.5) return;
+      if (drawProgressCW < 0.3) return;
       // Pick a random point along drawn portions of hexagon
-      const pos = Math.random() * Math.min(drawProgress, 6);
+      const totalDrawn = drawProgressCW + drawProgressCCW;
+      const pos = Math.random() * Math.min(totalDrawn, 6);
       const hp = hexPoint(pos / 6, hexSize, centerX, centerY);
       sparks.push({
         x: hp.x + (Math.random() - 0.5) * 10,
@@ -570,23 +572,35 @@
     function drawHexSegments() {
       const verts = getHexVertices(hexSize, centerX, centerY);
       const t = elapsed();
-      for (let i = 0; i < 6; i++) {
-        const segProgress = Math.max(0, Math.min(drawProgress - i, 1));
+
+      // CW segments: 0(top→topR), 1(topR→botR), 2(botR→bot)
+      for (let i = 0; i < 3; i++) {
+        const segProgress = Math.max(0, Math.min(drawProgressCW - i, 1));
+        if (segProgress < 0.08) continue; // min threshold — no thin lines
         const a = verts[i], b = verts[(i + 1) % 6];
         drawPlasmaBeam(a.x, a.y, b.x, b.y, segProgress, t + i * 7);
 
-        // Flare at start vertex when beam begins
-        if (segProgress > 0.05) {
+        if (segProgress > 0.1)
           drawVertexFlare(a.x, a.y, Math.min(segProgress * 2, 1), i);
-        }
-        // Flare at end vertex when segment completes
-        if (segProgress >= 0.95) {
-          const endIntensity = Math.min((segProgress - 0.95) / 0.05, 1);
-          drawVertexFlare(b.x, b.y, endIntensity, i + 1);
-        }
+        if (segProgress >= 0.95)
+          drawVertexFlare(b.x, b.y, Math.min((segProgress - 0.95) / 0.05, 1), i + 1);
       }
 
-      // Electric sparks along beams
+      // CCW segments: drawn in reverse — 5(top→topL), 4(topL→botL), 3(botL→bot)
+      for (let i = 0; i < 3; i++) {
+        const segProgress = Math.max(0, Math.min(drawProgressCCW - i, 1));
+        if (segProgress < 0.08) continue; // min threshold
+        const segIdx = (6 - i) % 6; // segments 5, 4, 3
+        const a = verts[segIdx], b = verts[(segIdx - 1 + 6) % 6];
+        drawPlasmaBeam(a.x, a.y, b.x, b.y, segProgress, t + (segIdx + 3) * 7);
+
+        if (segProgress > 0.1)
+          drawVertexFlare(a.x, a.y, Math.min(segProgress * 2, 1), segIdx);
+        if (segProgress >= 0.95)
+          drawVertexFlare(b.x, b.y, Math.min((segProgress - 0.95) / 0.05, 1), (segIdx - 1 + 6) % 6);
+      }
+
+      // Electric sparks
       updateAndDrawSparks();
     }
 
@@ -646,32 +660,33 @@
       }
       ctx.fillRect(0, 0, W, H);
 
-      // Phase transitions
-      if (phase === Phase.DARK && t >= 1.5) phase = Phase.SPAWN;
-      if (phase === Phase.SPAWN && t >= 3.5) phase = Phase.CONVERGE;
-      if (phase === Phase.CONVERGE && t >= 9) {
+      // Phase transitions — compressed timeline (~8s to full reveal)
+      if (phase === Phase.DARK && t >= 0.5) phase = Phase.SPAWN;
+      if (phase === Phase.SPAWN && t >= 2) phase = Phase.CONVERGE;
+      if (phase === Phase.CONVERGE && t >= 6) {
         phase = Phase.REVEAL_TITLE;
         document.getElementById('title').classList.add('visible');
       }
-      if (phase === Phase.REVEAL_TITLE && t >= 10.5) {
+      if (phase === Phase.REVEAL_TITLE && t >= 7) {
         phase = Phase.REVEAL_TAGLINE;
         typeTagline();
       }
-      if (phase === Phase.REVEAL_TAGLINE && t >= 12) phase = Phase.STEADY;
+      if (phase === Phase.REVEAL_TAGLINE && t >= 8.5) phase = Phase.STEADY;
 
-      // Spawn all particles gradually
+      // Spawn all particles fast
       if (phase >= Phase.SPAWN) {
-        const progress = Math.min((t - 1.5) / 3, 1);
+        const progress = Math.min((t - 0.5) / 1.5, 1); // all particles in 1.5s
         const target = Math.floor(progress * PARTICLE_COUNT);
         for (let i = 0; i < target; i++) particles[i].alive = true;
       }
 
-      // Capture particles near hex edges during convergence
+      // Capture particles + draw progress during convergence
       if (phase >= Phase.CONVERGE) {
         tryCaptureParticles();
-        // Draw progress: slowly trace hexagon perimeter (0→6 over ~8 seconds)
-        const convergeElapsed = t - 3.5;
-        drawProgress = Math.min(convergeElapsed * 0.75, 6); // ~8s to complete full hex
+        // Both CW and CCW progress: 0→3 each over ~4 seconds
+        const convergeElapsed = t - 2;
+        drawProgressCW = Math.min(convergeElapsed * 0.75, 3);
+        drawProgressCCW = Math.min(convergeElapsed * 0.75, 3);
       }
 
       // Draw hex segments FIRST (behind particles for depth)

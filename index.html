@@ -140,15 +140,23 @@
       H = canvas.height = window.innerHeight;
       centerX = W / 2;
       centerY = H / 2;
-      hexSize = Math.min(W, H) * 0.48;
+      // Fit hexagon inside viewport with margin — account for aspect ratio
+      // On portrait (mobile), width is the constraint. On landscape, height is.
+      const margin = 40;
+      const maxW = (W - margin * 2) / 2;       // half-width available
+      const maxH = (H - margin * 2) / 2;       // half-height available
+      // Hex pointy-top: width = size*sqrt(3), height = size*2
+      const sizeByW = maxW / (Math.sqrt(3) / 2);
+      const sizeByH = maxH;
+      hexSize = Math.min(sizeByW, sizeByH);
     }
     resize();
     window.addEventListener('resize', resize);
 
     // === CONFIG ===
-    const isMobile = window.innerWidth < 768;
-    const PARTICLE_COUNT = isMobile ? 120 : 280;
-    const MOUSE_REPEL_RADIUS = 100;
+    const isMobile = window.innerWidth < 768 || window.innerHeight < 500;
+    const PARTICLE_COUNT = isMobile ? 100 : 280;
+    const MOUSE_REPEL_RADIUS = isMobile ? 60 : 100;
 
     // === PHASES ===
     const Phase = { DARK: 0, SPAWN: 1, CONVERGE: 2, REVEAL_TITLE: 3, REVEAL_TAGLINE: 4, STEADY: 5 };
@@ -156,10 +164,25 @@
     const startTime = performance.now();
     function elapsed() { return (performance.now() - startTime) / 1000; }
 
-    // === MOUSE ===
+    // === MOUSE / TOUCH ===
     let mouseX = -9999, mouseY = -9999;
     document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
     document.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+    // Touch support for mobile
+    document.addEventListener('touchmove', e => {
+      const touch = e.touches[0];
+      mouseX = touch.clientX; mouseY = touch.clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', () => { mouseX = -9999; mouseY = -9999; });
+    // Gyroscope for mobile (subtle interaction)
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', e => {
+        if (e.gamma !== null && e.beta !== null) {
+          mouseX = centerX + (e.gamma / 90) * (W / 4);
+          mouseY = centerY + ((e.beta - 45) / 90) * (H / 4);
+        }
+      });
+    }
 
     // === HEXAGON VERTICES ===
     function getHexVertices(size, cx, cy) {
@@ -456,7 +479,7 @@
       }
     }
 
-    // === ENERGY FLARE at vertex — starburst with radiating spikes ===
+    // === ENERGY FLARE at vertex — soft bloom with hot white center ===
     function drawVertexFlare(x, y, intensity, vertIdx) {
       if (intensity < 0.01) return;
       const t = elapsed();
@@ -467,54 +490,45 @@
       else if (bt < 0.5) beat = (bt - 0.3) / 0.2;
       else if (bt < 0.8) beat = 1 - (bt - 0.5) / 0.3;
       const glow = intensity * (0.5 + 0.5 * beat);
+      const radius = 40 * intensity;
 
-      // Large soft bloom (the energy concentration)
+      // Layer 1: wide soft bloom
       ctx.save();
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, 35 * intensity);
-      grad.addColorStop(0, `rgba(255,220,80,${glow * 0.4})`);
-      grad.addColorStop(0.4, `rgba(255,190,30,${glow * 0.12})`);
-      grad.addColorStop(1, `rgba(255,160,0,0)`);
+      const grad1 = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      grad1.addColorStop(0, `rgba(255,210,60,${glow * 0.35})`);
+      grad1.addColorStop(0.3, `rgba(255,180,30,${glow * 0.1})`);
+      grad1.addColorStop(1, `rgba(255,150,0,0)`);
       ctx.beginPath();
-      ctx.arc(x, y, 35 * intensity, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = grad1;
       ctx.fill();
       ctx.restore();
 
-      // Radiating spikes (starburst) — 5-7 short rays emanating from vertex
-      const spikeCount = 5 + (vertIdx % 3);
-      for (let s = 0; s < spikeCount; s++) {
-        const angle = (s / spikeCount) * Math.PI * 2 + vertIdx * 0.8 + t * 0.3;
-        const spikeLen = (12 + Perlin.noise2D(s + vertIdx * 10, t * 0.8) * 10) * intensity;
-        const sx = x + Math.cos(angle) * spikeLen;
-        const sy = y + Math.sin(angle) * spikeLen;
+      // Layer 2: tighter warm glow
+      ctx.save();
+      const grad2 = ctx.createRadialGradient(x, y, 0, x, y, radius * 0.4);
+      grad2.addColorStop(0, `rgba(255,230,120,${glow * 0.5})`);
+      grad2.addColorStop(1, `rgba(255,200,50,0)`);
+      ctx.beginPath();
+      ctx.arc(x, y, radius * 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = grad2;
+      ctx.fill();
+      ctx.restore();
 
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(sx, sy);
-        ctx.lineCap = 'round';
-        ctx.shadowColor = `rgba(255,220,100,${glow * 0.5})`;
-        ctx.shadowBlur = 8;
-        ctx.strokeStyle = `rgba(255,210,60,${glow * 0.4})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Bright core — tiny hot center
+      // Layer 3: hot white-yellow core
       ctx.save();
       ctx.beginPath();
-      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
-      ctx.shadowColor = `rgba(255,240,150,${glow})`;
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = `rgba(255,230,120,${glow * 0.9})`;
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.shadowColor = `rgba(255,250,200,${glow})`;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = `rgba(255,248,220,${glow * 0.9})`;
       ctx.fill();
       ctx.restore();
     }
 
     // === SPARKS — ephemeral electric discharges along beams ===
     const sparks = [];
-    const MAX_SPARKS = 15;
+    const MAX_SPARKS = isMobile ? 8 : 15;
 
     function spawnSpark() {
       if (drawProgress < 0.5) return;
@@ -615,7 +629,12 @@
       const t = elapsed();
 
       // Soft fade — trail persistence
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+      // Periodic hard clear every 3s to prevent gray tint buildup
+      if (Math.floor(t * 10) % 30 === 0) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+      } else {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+      }
       ctx.fillRect(0, 0, W, H);
 
       // Phase transitions

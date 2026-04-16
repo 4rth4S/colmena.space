@@ -37,12 +37,16 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
       width: 100%;
-      height: 100%;
-      overflow: hidden;
+      min-height: 100%;
       background: var(--black);
       font-family: 'Playfair Display', serif;
+      overflow-x: hidden;
     }
 
     canvas {
@@ -91,6 +95,104 @@
       min-height: 1.5em;
       text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
     }
+
+    /* Hero takes exactly one viewport */
+    .hero-spacer {
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      pointer-events: none;
+    }
+    .scroll-hint.visible {
+      opacity: 0.5;
+    }
+    .scroll-hint svg {
+      width: 24px;
+      height: 24px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* Manifesto section */
+    .manifesto {
+      position: relative;
+      z-index: 4;
+      background: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+
+    .manifesto-line {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      color: var(--bone);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      text-align: center;
+    }
+    .manifesto-line.revealed {
+      opacity: 0.85;
+      transform: translateY(0);
+    }
+    .manifesto-line.accent {
+      color: var(--amber-muted);
+      font-style: italic;
+    }
+    .manifesto-line.dim {
+      color: rgba(245,240,232,0.4);
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+    }
+
+    .repo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 2.5rem;
+      padding: 0.8rem 2rem;
+      border: 1px solid rgba(212,160,23,0.3);
+      color: var(--amber-muted);
+      text-decoration: none;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      letter-spacing: 0.08em;
+      transition: border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .repo-link.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .repo-link:hover {
+      border-color: var(--gold-dark);
+      color: var(--bone);
+      box-shadow: 0 0 20px rgba(212,160,23,0.15);
+    }
+    .repo-link svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
   </style>
 </head>
 <body>
@@ -99,6 +201,29 @@
     <h1 class="title" id="title">COLMENA</h1>
     <p class="tagline" id="tagline"></p>
   </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-hint" id="scrollHint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(212,160,23,0.6)" stroke-width="2">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+
+  <!-- Hero spacer (canvas is fixed, this makes room for scroll) -->
+  <div class="hero-spacer"></div>
+
+  <!-- Manifesto -->
+  <section class="manifesto">
+    <div class="manifesto-line">Trust firewall for AI coding agents.</div>
+    <div class="manifesto-line accent">One operator. Many agents. Full control.</div>
+    <div class="manifesto-line">Built in Rust. Local-first. Zero cloud dependencies.</div>
+    <div class="manifesto-line dim">&lt; 15ms latency. Every tool call evaluated.</div>
+    <div class="manifesto-line accent" style="margin-top: 1rem;">The hive defends the colony.</div>
+    <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="repo-link">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      View on GitHub
+    </a>
+  </section>
 
   <script>
     // === PERLIN NOISE ===
@@ -718,8 +843,96 @@
       for (const p of particles) { if (p.layer === 'mid' || p.captured) p.draw(); }
       for (const p of particles) { if (p.layer === 'fg' && !p.captured) p.draw(); }
 
+      // Tagline highlight particles — orbit the tagline after steady state
+      updateTaglineParticles(t);
+
       requestAnimationFrame(animate);
     }
+
+    // === TAGLINE HIGHLIGHT PARTICLES ===
+    // After STEADY + 3 seconds, some particles migrate to orbit around the tagline
+    const taglineParticles = [];
+    const TAGLINE_PARTICLE_COUNT = isMobile ? 6 : 10;
+    let taglinePhaseStarted = false;
+
+    function initTaglineParticles() {
+      const taglineEl = document.getElementById('tagline');
+      const rect = taglineEl.getBoundingClientRect();
+      const tcx = rect.left + rect.width / 2;
+      const tcy = rect.top + rect.height / 2;
+      const hw = rect.width / 2 + 20;
+      const hh = rect.height / 2 + 12;
+
+      for (let i = 0; i < TAGLINE_PARTICLE_COUNT; i++) {
+        taglineParticles.push({
+          angle: (i / TAGLINE_PARTICLE_COUNT) * Math.PI * 2,
+          speed: 0.3 + Math.random() * 0.4,
+          radiusX: hw + Math.random() * 15,
+          radiusY: hh + Math.random() * 10,
+          size: 1 + Math.random() * 1.5,
+          opacity: 0,
+          noiseOff: Math.random() * 1000,
+          cx: tcx, cy: tcy
+        });
+      }
+    }
+
+    function updateTaglineParticles(t) {
+      if (phase !== Phase.STEADY) return;
+      const steadyTime = t - 8.5; // time since STEADY began
+
+      // Wait 3 seconds after steady before starting
+      if (steadyTime < 3) return;
+
+      if (!taglinePhaseStarted) {
+        taglinePhaseStarted = true;
+        initTaglineParticles();
+      }
+
+      const fadeIn = Math.min((steadyTime - 3) / 2, 1); // fade in over 2s
+
+      for (const tp of taglineParticles) {
+        tp.angle += tp.speed * 0.016;
+        const wobbleX = Perlin.noise2D(tp.noiseOff + t * 0.4, 0) * 8;
+        const wobbleY = Perlin.noise2D(0, tp.noiseOff + t * 0.4) * 5;
+        const x = tp.cx + Math.cos(tp.angle) * tp.radiusX + wobbleX;
+        const y = tp.cy + Math.sin(tp.angle) * tp.radiusY + wobbleY;
+        tp.opacity = fadeIn * (0.4 + 0.3 * Math.sin(t * 2 + tp.noiseOff));
+
+        ctx.save();
+        ctx.shadowColor = `rgba(255,210,60,${tp.opacity * 0.6})`;
+        ctx.shadowBlur = tp.size * 6;
+        ctx.beginPath();
+        ctx.arc(x, y, tp.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,200,50,${tp.opacity})`;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // === SCROLL HINT — show after steady state ===
+    setTimeout(() => {
+      const hint = document.getElementById('scrollHint');
+      if (hint) hint.classList.add('visible');
+    }, 10000);
+
+    // Hide scroll hint when user scrolls
+    window.addEventListener('scroll', () => {
+      const hint = document.getElementById('scrollHint');
+      if (hint && window.scrollY > 50) hint.classList.remove('visible');
+    }, { passive: true });
+
+    // === MANIFESTO REVEAL — IntersectionObserver ===
+    const manifestoItems = document.querySelectorAll('.manifesto-line, .repo-link');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, idx) => {
+        if (entry.isIntersecting) {
+          // Stagger the reveal
+          setTimeout(() => entry.target.classList.add('revealed'), idx * 150);
+        }
+      });
+    }, { threshold: 0.2 });
+    manifestoItems.forEach(el => observer.observe(el));
 
     animate();
   </script>

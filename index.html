@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colmena — El enjambre aprende donde picar.</title>
-  <meta name="description" content="Something is being built. The swarm learns where to sting.">
+  <title>Colmena — The swarm learns where to sting.</title>
+  <meta name="description" content="The swarm learns where to sting.">
   <meta name="theme-color" content="#000000">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Colmena">
-  <meta property="og:description" content="El enjambre aprende donde picar.">
+  <meta property="og:description" content="The swarm learns where to sting.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://colmena.space">
   <meta property="og:image" content="https://colmena.space/og-image.png">
@@ -87,6 +87,7 @@
       letter-spacing: 0.05em;
       margin-top: 1.2rem;
       min-height: 1.5em;
+      text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
     }
   </style>
 </head>
@@ -295,7 +296,16 @@
 
     // === HEXAGON ===
     function drawHexagon(opacity) {
-      const size = Math.min(W, H) * 0.15;
+      const size = Math.min(W, H) * 0.45;
+      // Heartbeat: quick double-pulse then rest
+      const t = elapsed() % 2.4; // cycle every 2.4s
+      let beat = 0;
+      if (t < 0.15) beat = t / 0.15;              // first beat up
+      else if (t < 0.3) beat = 1 - (t - 0.15) / 0.15; // first beat down
+      else if (t < 0.5) beat = (t - 0.3) / 0.2;       // second beat up
+      else if (t < 0.8) beat = 1 - (t - 0.5) / 0.3;   // second beat down
+      else beat = 0;                                     // rest
+      opacity = opacity * 0.3 + opacity * 0.7 * beat;
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.beginPath();
@@ -315,7 +325,7 @@
 
     // === TAGLINE TYPEWRITER ===
     function typeTagline() {
-      const text = 'El enjambre aprende donde picar.';
+      const text = 'The swarm learns where to sting.';
       const el = document.getElementById('tagline');
       let i = 0;
       const interval = setInterval(() => {
@@ -369,7 +379,7 @@
 
       // Draw hexagon during and after convergence
       if (phase >= Phase.CONVERGE) {
-        const hexOpacity = Math.min((t - 3) / 1.5, 0.4);
+        const hexOpacity = Math.min((t - 3) / 1.5, 0.35);
         drawHexagon(hexOpacity);
       }
 

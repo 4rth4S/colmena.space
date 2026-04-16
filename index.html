@@ -138,6 +138,7 @@
       position: relative;
       z-index: 5;
       background: var(--black);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -924,10 +925,19 @@
       if (hint) hint.classList.add('visible');
     }, 10000);
 
-    // Hide scroll hint when user scrolls
+    // Fade hero elements as user scrolls past hero section
+    const heroCanvas = document.getElementById('swarm');
+    const heroContent = document.querySelector('.content');
     window.addEventListener('scroll', () => {
       const hint = document.getElementById('scrollHint');
       if (hint && window.scrollY > 50) hint.classList.remove('visible');
+
+      // Fade out hero when scrolling past first viewport
+      const vh = window.innerHeight;
+      const fadeProgress = Math.min(window.scrollY / (vh * 0.6), 1);
+      const opacity = 1 - fadeProgress;
+      heroCanvas.style.opacity = opacity;
+      heroContent.style.opacity = opacity;
     }, { passive: true });
 
     // === MANIFESTO REVEAL — IntersectionObserver ===

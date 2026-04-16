@@ -181,17 +181,18 @@
     }
 
     // === PARTICLE ===
+    // All particles start free. During CONVERGE some get "captured" by the hex edges.
     class Particle {
-      constructor(type) {
-        this.type = type; // 'free' or 'orbit'
+      constructor() {
         this.alive = false;
+        this.captured = false; // becomes true when particle finds the hex edge
         this.noiseX = Math.random() * 1000;
         this.noiseY = Math.random() * 1000;
-        this.speed = 0.3 + Math.random() * 0.7;
+        this.speed = 0.4 + Math.random() * 0.8;
         this.size = 1 + Math.random() * 2.5;
         this.opacity = 0.3 + Math.random() * 0.6;
         this.trail = [];
-        this.maxTrail = type === 'orbit' ? 12 : 6;
+        this.maxTrail = 8;
 
         // Color: gold to amber
         const c = Math.random();
@@ -199,62 +200,73 @@
         this.g = Math.floor(150 + c * 40);
         this.b = Math.floor(15 + c * 15);
 
-        if (type === 'orbit') {
-          this.orbitPos = Math.random();
-          this.orbitSpeed = 0.04 + Math.random() * 0.06;
-          this.orbitOffset = (Math.random() - 0.5) * 15;
-          this.x = centerX;
-          this.y = centerY;
-        } else {
-          // Spawn from edges
-          const edge = Math.floor(Math.random() * 4);
-          if (edge === 0) { this.x = Math.random() * W; this.y = -10; }
-          else if (edge === 1) { this.x = W + 10; this.y = Math.random() * H; }
-          else if (edge === 2) { this.x = Math.random() * W; this.y = H + 10; }
-          else { this.x = -10; this.y = Math.random() * H; }
-        }
+        // Orbit state (set when captured)
+        this.orbitPos = 0;
+        this.orbitSpeed = 0;
+        this.orbitOffset = 0;
+
+        // Spawn from edges
+        const edge = Math.floor(Math.random() * 4);
+        if (edge === 0) { this.x = Math.random() * W; this.y = -10; }
+        else if (edge === 1) { this.x = W + 10; this.y = Math.random() * H; }
+        else if (edge === 2) { this.x = Math.random() * W; this.y = H + 10; }
+        else { this.x = -10; this.y = Math.random() * H; }
         this.prevX = this.x;
         this.prevY = this.y;
+      }
+
+      // Find nearest point on hex perimeter and distance to it
+      nearestHexParam() {
+        let bestDist = Infinity, bestT = 0;
+        // Sample 60 points around hex
+        for (let i = 0; i < 60; i++) {
+          const t = i / 60;
+          const hp = hexPoint(t, hexSize, centerX, centerY);
+          const dx = this.x - hp.x, dy = this.y - hp.y;
+          const d = dx * dx + dy * dy;
+          if (d < bestDist) { bestDist = d; bestT = t; }
+        }
+        return { dist: Math.sqrt(bestDist), t: bestT };
       }
 
       update(t) {
         if (!this.alive) return;
         this.trail.push({ x: this.x, y: this.y });
         if (this.trail.length > this.maxTrail) this.trail.shift();
-
         this.prevX = this.x;
         this.prevY = this.y;
 
-        if (this.type === 'orbit' && phase >= Phase.CONVERGE) {
-          // Orbit along hexagon edges
-          this.orbitPos += this.orbitSpeed * 0.016;
+        if (this.captured) {
+          // Orbit along hexagon edges — plasma flow
+          this.orbitPos += this.orbitSpeed;
           const hp = hexPoint(this.orbitPos, hexSize, centerX, centerY);
           const nx = Perlin.noise2D(this.noiseX + t * 0.5, t * 0.3) * this.orbitOffset;
           const ny = Perlin.noise2D(this.noiseY + t * 0.5, t * 0.3) * this.orbitOffset;
           this.x = hp.x + nx;
           this.y = hp.y + ny;
-        } else {
-          // Free drift with Perlin noise
-          const nx = Perlin.noise2D(this.noiseX + t * 0.3, this.noiseY) * 2;
-          const ny = Perlin.noise2D(this.noiseY + t * 0.3, this.noiseX) * 2;
-          this.x += nx * this.speed;
-          this.y += ny * this.speed;
+          return; // no mouse repel or edge wrap for captured particles
+        }
 
-          // Attractor toward center during convergence
-          if (phase >= Phase.CONVERGE) {
-            const ax = centerX - this.x, ay = centerY - this.y;
-            const ad = Math.sqrt(ax * ax + ay * ay);
-            if (ad > 0) {
-              const strength = phase === Phase.CONVERGE
-                ? Math.min((elapsed() - 3) / 2, 1) * 0.8
-                : 0.1;
-              this.x += (ax / ad) * strength;
-              this.y += (ay / ad) * strength;
-              // Tangential orbit in steady state
-              if (phase > Phase.CONVERGE) {
-                this.x += (-ay / ad) * 0.4 * this.speed;
-                this.y += (ax / ad) * 0.4 * this.speed;
-              }
+        // Free drift with Perlin noise
+        const nx = Perlin.noise2D(this.noiseX + t * 0.3, this.noiseY) * 2;
+        const ny = Perlin.noise2D(this.noiseY + t * 0.3, this.noiseX) * 2;
+        this.x += nx * this.speed;
+        this.y += ny * this.speed;
+
+        // Attractor toward hex perimeter during convergence
+        if (phase >= Phase.CONVERGE) {
+          const ax = centerX - this.x, ay = centerY - this.y;
+          const ad = Math.sqrt(ax * ax + ay * ay);
+          if (ad > 0) {
+            const strength = phase === Phase.CONVERGE
+              ? Math.min((elapsed() - 3.5) / 3, 1) * 0.6
+              : 0.08;
+            this.x += (ax / ad) * strength;
+            this.y += (ay / ad) * strength;
+            // Tangential drift
+            if (phase > Phase.CONVERGE) {
+              this.x += (-ay / ad) * 0.3 * this.speed;
+              this.y += (ax / ad) * 0.3 * this.speed;
             }
           }
         }
@@ -280,23 +292,25 @@
         if (!this.alive) return;
         const col = `${this.r},${this.g},${this.b}`;
 
-        // Draw trail
+        // Trail — brighter for captured particles (they ARE the hexagon)
         if (this.trail.length > 1) {
+          const trailMult = this.captured ? 0.7 : 0.35;
           for (let i = 1; i < this.trail.length; i++) {
-            const alpha = (i / this.trail.length) * this.opacity * 0.4;
+            const alpha = (i / this.trail.length) * this.opacity * trailMult;
             ctx.beginPath();
             ctx.moveTo(this.trail[i - 1].x, this.trail[i - 1].y);
             ctx.lineTo(this.trail[i].x, this.trail[i].y);
             ctx.strokeStyle = `rgba(${col},${alpha})`;
-            ctx.lineWidth = this.size * 0.5;
+            ctx.lineWidth = this.captured ? this.size * 0.8 : this.size * 0.4;
             ctx.stroke();
           }
         }
 
-        // Particle with glow
+        // Particle with glow — captured particles glow more
         ctx.save();
-        ctx.shadowColor = `rgba(${col},0.6)`;
-        ctx.shadowBlur = this.size * 4;
+        const glowMult = this.captured ? 1 : 0.5;
+        ctx.shadowColor = `rgba(${col},${0.6 * glowMult})`;
+        ctx.shadowBlur = this.size * (this.captured ? 8 : 4);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${col},${this.opacity})`;
@@ -307,63 +321,70 @@
 
     // === CREATE PARTICLES ===
     const particles = [];
-    const orbitCount = Math.floor(PARTICLE_COUNT * 0.45);
-    const freeCount = PARTICLE_COUNT - orbitCount;
-    for (let i = 0; i < freeCount; i++) particles.push(new Particle('free'));
-    for (let i = 0; i < orbitCount; i++) particles.push(new Particle('orbit'));
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
-    // === NEON HEXAGON WITH GLOW ===
-    function drawHexagon(intensity) {
-      // Heartbeat pulse
+    // How many particles should be captured at full charge
+    const maxCaptured = Math.floor(PARTICLE_COUNT * 0.45);
+    let capturedCount = 0;
+
+    // === HEXAGON SEGMENTS — charge per segment ===
+    // Each segment tracks accumulated charge from captured particles
+    const segmentCharge = [0, 0, 0, 0, 0, 0];
+
+    function drawHexSegments() {
+      const verts = getHexVertices(hexSize, centerX, centerY);
+
+      // Heartbeat on fully charged segments
       const bt = elapsed() % 2.4;
       let beat = 0;
       if (bt < 0.15) beat = bt / 0.15;
       else if (bt < 0.3) beat = 1 - (bt - 0.15) / 0.15;
       else if (bt < 0.5) beat = (bt - 0.3) / 0.2;
       else if (bt < 0.8) beat = 1 - (bt - 0.5) / 0.3;
-      const glow = intensity * (0.4 + 0.6 * beat);
 
-      ctx.save();
-      ctx.translate(centerX, centerY);
+      for (let i = 0; i < 6; i++) {
+        const charge = segmentCharge[i]; // 0→1
+        if (charge < 0.01) continue;
 
-      // Build path
-      function hexPath() {
+        const a = verts[i], b = verts[(i + 1) % 6];
+        const glow = charge * (0.5 + 0.5 * beat);
+
+        // Layer 1: wide bloom
+        ctx.save();
         ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-          const a = (Math.PI / 3) * i - Math.PI / 2;
-          const x = Math.cos(a) * hexSize;
-          const y = Math.sin(a) * hexSize;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.shadowColor = `rgba(255,190,0,${glow * 0.5})`;
+        ctx.shadowBlur = 50;
+        ctx.strokeStyle = `rgba(212,160,23,${glow * 0.12})`;
+        ctx.lineWidth = 8;
+        ctx.stroke();
+        ctx.restore();
+
+        // Layer 2: medium
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.shadowColor = `rgba(255,200,50,${glow * 0.6})`;
+        ctx.shadowBlur = 25;
+        ctx.strokeStyle = `rgba(230,180,40,${glow * 0.35})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.restore();
+
+        // Layer 3: core
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.shadowColor = `rgba(255,220,100,${glow * 0.8})`;
+        ctx.shadowBlur = 12;
+        ctx.strokeStyle = `rgba(255,210,60,${glow * 0.7})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
       }
-
-      // Layer 1: wide outer glow
-      hexPath();
-      ctx.shadowColor = `rgba(255,190,0,${glow * 0.5})`;
-      ctx.shadowBlur = 60;
-      ctx.strokeStyle = `rgba(212,160,23,${glow * 0.15})`;
-      ctx.lineWidth = 8;
-      ctx.stroke();
-
-      // Layer 2: medium glow
-      hexPath();
-      ctx.shadowColor = `rgba(255,200,50,${glow * 0.7})`;
-      ctx.shadowBlur = 30;
-      ctx.strokeStyle = `rgba(230,180,40,${glow * 0.4})`;
-      ctx.lineWidth = 4;
-      ctx.stroke();
-
-      // Layer 3: bright core line
-      hexPath();
-      ctx.shadowColor = `rgba(255,220,100,${glow})`;
-      ctx.shadowBlur = 15;
-      ctx.strokeStyle = `rgba(255,210,60,${glow * 0.9})`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      ctx.restore();
     }
 
     // === TAGLINE TYPEWRITER ===
@@ -378,39 +399,64 @@
       }, 50);
     }
 
+    // === CAPTURE LOGIC ===
+    // Gradually capture free particles that are near the hex edges
+    function tryCaptureParticles() {
+      if (capturedCount >= maxCaptured) return;
+      const captureRadius = 40; // particles within 40px of hex edge get captured
+
+      for (const p of particles) {
+        if (p.captured || !p.alive) continue;
+        if (capturedCount >= maxCaptured) break;
+
+        const nearest = p.nearestHexParam();
+        if (nearest.dist < captureRadius) {
+          p.captured = true;
+          p.orbitPos = nearest.t;
+          p.orbitSpeed = 0.0006 + Math.random() * 0.001;
+          p.orbitOffset = (Math.random() - 0.5) * 12;
+          p.maxTrail = 15;
+          p.trail = []; // clear trail to avoid line from old position
+          capturedCount++;
+
+          // Charge the segment this particle landed on
+          const segIdx = Math.floor(nearest.t * 6) % 6;
+          segmentCharge[segIdx] = Math.min(segmentCharge[segIdx] + (1 / (maxCaptured / 6)), 1);
+        }
+      }
+    }
+
     // === ANIMATION LOOP ===
     function animate() {
       const t = elapsed();
 
       // Soft fade — trail persistence
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, W, H);
 
       // Phase transitions
       if (phase === Phase.DARK && t >= 1.5) phase = Phase.SPAWN;
       if (phase === Phase.SPAWN && t >= 3.5) phase = Phase.CONVERGE;
-      if (phase === Phase.CONVERGE && t >= 5.5) {
+      if (phase === Phase.CONVERGE && t >= 7) {
         phase = Phase.REVEAL_TITLE;
         document.getElementById('title').classList.add('visible');
       }
-      if (phase === Phase.REVEAL_TITLE && t >= 6.5) {
+      if (phase === Phase.REVEAL_TITLE && t >= 8) {
         phase = Phase.REVEAL_TAGLINE;
         typeTagline();
       }
-      if (phase === Phase.REVEAL_TAGLINE && t >= 8) phase = Phase.STEADY;
+      if (phase === Phase.REVEAL_TAGLINE && t >= 9.5) phase = Phase.STEADY;
 
-      // Spawn free particles gradually
+      // Spawn all particles gradually
       if (phase >= Phase.SPAWN) {
-        const progress = Math.min((t - 1.5) / 2, 1);
-        const target = Math.floor(progress * freeCount);
+        const progress = Math.min((t - 1.5) / 3, 1);
+        const target = Math.floor(progress * PARTICLE_COUNT);
         for (let i = 0; i < target; i++) particles[i].alive = true;
       }
 
-      // Spawn orbit particles during convergence
+      // Capture particles near hex edges during convergence
       if (phase >= Phase.CONVERGE) {
-        const progress = Math.min((t - 3.5) / 2, 1);
-        const target = Math.floor(progress * orbitCount);
-        for (let i = 0; i < target; i++) particles[freeCount + i].alive = true;
+        tryCaptureParticles();
       }
 
       // Update and draw particles
@@ -419,16 +465,8 @@
         p.draw();
       }
 
-      // Hexagon — intensity fed by orbit particles (plasma charging)
-      if (phase >= Phase.CONVERGE) {
-        let aliveOrbit = 0;
-        for (let i = freeCount; i < particles.length; i++) {
-          if (particles[i].alive) aliveOrbit++;
-        }
-        const chargeRatio = aliveOrbit / orbitCount; // 0→1 as orbit particles spawn
-        const hexIntensity = chargeRatio;
-        drawHexagon(hexIntensity);
-      }
+      // Draw hex segments (built by captured particles)
+      drawHexSegments();
 
       requestAnimationFrame(animate);
     }

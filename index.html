@@ -70,6 +70,7 @@
       font-weight: 900;
       color: var(--bone);
       letter-spacing: 0.3em;
+      margin-right: -0.3em;
       text-transform: uppercase;
       opacity: 0;
       transition: opacity 1s ease;
@@ -360,8 +361,17 @@
       const nx = -dy / len, ny = dx / len;
       const steps = Math.max(Math.floor(progress * 40), 4);
 
+      // Fade factor: taper off at leading edge for soft tip
+      function edgeFade(frac) {
+        if (progress >= 1) return 1; // complete segment, no fade
+        const tipZone = 0.15;
+        if (frac > 1 - tipZone) return (1 - frac) / tipZone;
+        return 1;
+      }
+
       // --- Layer 1: Wide outer bloom (wavy) ---
       ctx.save();
+      ctx.lineCap = 'round';
       ctx.beginPath();
       for (let i = 0; i <= steps; i++) {
         const frac = i / steps;
@@ -381,6 +391,7 @@
 
       // --- Layer 2: Medium glow (wavy) ---
       ctx.save();
+      ctx.lineCap = 'round';
       ctx.beginPath();
       for (let i = 0; i <= steps; i++) {
         const frac = i / steps;
@@ -400,6 +411,7 @@
 
       // --- Layer 3: Bright thin core ---
       ctx.save();
+      ctx.lineCap = 'round';
       ctx.beginPath();
       for (let i = 0; i <= steps; i++) {
         const frac = i / steps;
@@ -417,9 +429,10 @@
       ctx.stroke();
       ctx.restore();
 
-      // --- Spiral helix filaments (3 strands, exaggerated) ---
+      // --- Spiral helix filaments (3 strands, tapered at tip) ---
       for (let s = 0; s < 3; s++) {
         ctx.save();
+        ctx.lineCap = 'round';
         ctx.beginPath();
         const spiralPhase = s * (Math.PI * 2 / 3) + time * 2.5;
         for (let i = 0; i <= steps; i++) {
@@ -427,7 +440,8 @@
           const baseX = ax + dx * frac;
           const baseY = ay + dy * frac;
           const amplitude = 20 + Perlin.noise2D(frac * 2 + time * 0.4, s * 100) * 12;
-          const helixOffset = Math.sin(frac * 14 + spiralPhase) * amplitude * intensity;
+          const fade = edgeFade(frac);
+          const helixOffset = Math.sin(frac * 14 + spiralPhase) * amplitude * intensity * fade;
           const px = baseX + nx * helixOffset;
           const py = baseY + ny * helixOffset;
           if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
@@ -441,14 +455,54 @@
       }
     }
 
+    // Glowing node at vertex where segments connect
+    function drawVertexNode(x, y, intensity) {
+      if (intensity < 0.01) return;
+      const bt = elapsed() % 2.4;
+      let beat = 0;
+      if (bt < 0.15) beat = bt / 0.15;
+      else if (bt < 0.3) beat = 1 - (bt - 0.15) / 0.15;
+      else if (bt < 0.5) beat = (bt - 0.3) / 0.2;
+      else if (bt < 0.8) beat = 1 - (bt - 0.5) / 0.3;
+      const glow = intensity * (0.5 + 0.5 * beat);
+
+      // Outer bloom
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, 12, 0, Math.PI * 2);
+      ctx.shadowColor = `rgba(255,200,50,${glow * 0.6})`;
+      ctx.shadowBlur = 40;
+      ctx.fillStyle = `rgba(255,190,0,${glow * 0.1})`;
+      ctx.fill();
+      ctx.restore();
+
+      // Bright core dot
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.shadowColor = `rgba(255,230,100,${glow})`;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = `rgba(255,220,80,${glow * 0.8})`;
+      ctx.fill();
+      ctx.restore();
+    }
+
     function drawHexSegments() {
       const verts = getHexVertices(hexSize, centerX, centerY);
       const t = elapsed();
       for (let i = 0; i < 6; i++) {
-        // Each segment's progress: how much is drawn (0→1)
         const segProgress = Math.max(0, Math.min(drawProgress - i, 1));
         const a = verts[i], b = verts[(i + 1) % 6];
         drawPlasmaBeam(a.x, a.y, b.x, b.y, segProgress, t + i * 7);
+
+        // Draw vertex node at start of segment when beam begins
+        if (segProgress > 0.01) {
+          drawVertexNode(a.x, a.y, Math.min(segProgress * 3, 1));
+        }
+        // Draw vertex node at end when segment is complete
+        if (segProgress >= 0.98) {
+          drawVertexNode(b.x, b.y, 1);
+        }
       }
     }
 

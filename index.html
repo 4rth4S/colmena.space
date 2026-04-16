@@ -213,14 +213,33 @@
     class Particle {
       constructor() {
         this.alive = false;
-        this.captured = false; // becomes true when particle finds the hex edge
+        this.captured = false;
         this.noiseX = Math.random() * 1000;
         this.noiseY = Math.random() * 1000;
-        this.speed = 0.4 + Math.random() * 0.8;
-        this.size = 1 + Math.random() * 2.5;
-        this.opacity = 0.5 + Math.random() * 0.5;
         this.trail = [];
         this.maxTrail = 8;
+
+        // Depth layer: 20% foreground, 50% mid, 30% background
+        const layerRoll = Math.random();
+        if (layerRoll < 0.2) {
+          // Foreground: big, bright, slow (close to camera)
+          this.size = 2.5 + Math.random() * 2;
+          this.opacity = 0.7 + Math.random() * 0.3;
+          this.speed = 0.2 + Math.random() * 0.4;
+          this.layer = 'fg';
+        } else if (layerRoll < 0.7) {
+          // Mid: medium, normal
+          this.size = 1.2 + Math.random() * 1.5;
+          this.opacity = 0.5 + Math.random() * 0.4;
+          this.speed = 0.4 + Math.random() * 0.6;
+          this.layer = 'mid';
+        } else {
+          // Background: tiny, dim, fast (far from camera)
+          this.size = 0.5 + Math.random() * 0.8;
+          this.opacity = 0.2 + Math.random() * 0.3;
+          this.speed = 0.6 + Math.random() * 1.0;
+          this.layer = 'bg';
+        }
 
         // Color: gold to amber
         const c = Math.random();
@@ -322,8 +341,8 @@
         if (!this.alive) return;
         const col = `${this.r},${this.g},${this.b}`;
 
-        // Only captured particles get trails (free particles = just dots, no crossing lines)
-        if (this.captured && this.trail.length > 1) {
+        // Only captured particles with enough trail history get trails
+        if (this.captured && this.trail.length > 3) {
           for (let i = 1; i < this.trail.length; i++) {
             const alpha = (i / this.trail.length) * this.opacity * 0.5;
             ctx.beginPath();
@@ -651,14 +670,8 @@
     function animate() {
       const t = elapsed();
 
-      // Soft fade — trail persistence
-      // Periodic hard clear every 3s to prevent gray tint buildup
-      if (Math.floor(t * 10) % 30 === 0) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-      } else {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
-      }
-      ctx.fillRect(0, 0, W, H);
+      // Hard clear + redraw everything each frame (no tint accumulation)
+      ctx.clearRect(0, 0, W, H);
 
       // Phase transitions — compressed timeline (~8s to full reveal)
       if (phase === Phase.DARK && t >= 0.5) phase = Phase.SPAWN;
@@ -689,14 +702,33 @@
         drawProgressCCW = Math.min(convergeElapsed * 0.75, 3);
       }
 
+      // Hex breathing — subtle scale oscillation once hex is complete
+      const hexComplete = drawProgressCW >= 3 && drawProgressCCW >= 3;
+      if (hexComplete) {
+        resize(); // reset hexSize to base
+        hexSize += Math.sin(t * 0.8) * 2 * glowScale; // ±2px breathing
+      }
+
       // Draw hex segments FIRST (behind particles for depth)
       drawHexSegments();
 
-      // Update and draw particles
-      for (const p of particles) {
-        p.update(t);
-        p.draw();
+      // Inner vignette glow when hex is substantially formed
+      if (drawProgressCW > 1.5) {
+        const vignetteIntensity = Math.min((drawProgressCW - 1.5) / 1.5, 1) * 0.06;
+        const grad = ctx.createRadialGradient(centerX, centerY, hexSize * 0.3, centerX, centerY, hexSize * 0.95);
+        grad.addColorStop(0, `rgba(0,0,0,0)`);
+        grad.addColorStop(1, `rgba(255,180,30,${vignetteIntensity})`);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, hexSize, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
       }
+
+      // Update and draw particles (bg layer first, then mid, then fg for depth)
+      for (const p of particles) { p.update(t); }
+      for (const p of particles) { if (p.layer === 'bg' && !p.captured) p.draw(); }
+      for (const p of particles) { if (p.layer === 'mid' || p.captured) p.draw(); }
+      for (const p of particles) { if (p.layer === 'fg' && !p.captured) p.draw(); }
 
       requestAnimationFrame(animate);
     }

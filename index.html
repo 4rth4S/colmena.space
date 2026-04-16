@@ -231,8 +231,10 @@
 
       update(t) {
         if (!this.alive) return;
-        this.trail.push({ x: this.x, y: this.y });
-        if (this.trail.length > this.maxTrail) this.trail.shift();
+        if (this.captured) {
+          this.trail.push({ x: this.x, y: this.y });
+          if (this.trail.length > this.maxTrail) this.trail.shift();
+        }
         this.prevX = this.x;
         this.prevY = this.y;
 
@@ -292,25 +294,24 @@
         if (!this.alive) return;
         const col = `${this.r},${this.g},${this.b}`;
 
-        // Trail — brighter for captured particles (they ARE the hexagon)
-        if (this.trail.length > 1) {
-          const trailMult = this.captured ? 0.7 : 0.35;
+        // Only captured particles get trails (free particles = just dots, no crossing lines)
+        if (this.captured && this.trail.length > 1) {
           for (let i = 1; i < this.trail.length; i++) {
-            const alpha = (i / this.trail.length) * this.opacity * trailMult;
+            const alpha = (i / this.trail.length) * this.opacity * 0.5;
             ctx.beginPath();
             ctx.moveTo(this.trail[i - 1].x, this.trail[i - 1].y);
             ctx.lineTo(this.trail[i].x, this.trail[i].y);
             ctx.strokeStyle = `rgba(${col},${alpha})`;
-            ctx.lineWidth = this.captured ? this.size * 0.8 : this.size * 0.4;
+            ctx.lineWidth = this.size * 0.6;
             ctx.stroke();
           }
         }
 
-        // Particle with glow — captured particles glow more
+        // Particle dot with glow
         ctx.save();
-        const glowMult = this.captured ? 1 : 0.5;
+        const glowMult = this.captured ? 1.2 : 0.4;
         ctx.shadowColor = `rgba(${col},${0.6 * glowMult})`;
-        ctx.shadowBlur = this.size * (this.captured ? 8 : 4);
+        ctx.shadowBlur = this.size * (this.captured ? 10 : 3);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${col},${this.opacity})`;
@@ -331,59 +332,116 @@
     // Each segment tracks accumulated charge from captured particles
     const segmentCharge = [0, 0, 0, 0, 0, 0];
 
-    function drawHexSegments() {
-      const verts = getHexVertices(hexSize, centerX, centerY);
+    // === PLASMA BEAM — draws a segment as an energy ray ===
+    function drawPlasmaBeam(ax, ay, bx, by, charge, time) {
+      if (charge < 0.01) return;
 
-      // Heartbeat on fully charged segments
-      const bt = elapsed() % 2.4;
+      // Heartbeat
+      const bt = time % 2.4;
       let beat = 0;
       if (bt < 0.15) beat = bt / 0.15;
       else if (bt < 0.3) beat = 1 - (bt - 0.15) / 0.15;
       else if (bt < 0.5) beat = (bt - 0.3) / 0.2;
       else if (bt < 0.8) beat = 1 - (bt - 0.5) / 0.3;
+      const glow = charge * (0.5 + 0.5 * beat);
 
+      const dx = bx - ax, dy = by - ay;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      // Normal perpendicular to segment
+      const nx = -dy / len, ny = dx / len;
+      const steps = 30;
+
+      // --- Layer 1: Wide outer bloom (wavy) ---
+      ctx.save();
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const frac = i / steps;
+        const baseX = ax + dx * frac;
+        const baseY = ay + dy * frac;
+        // Perlin wobble perpendicular to the line
+        const wobble = Perlin.noise2D(frac * 4 + time * 0.8, charge * 10) * 6;
+        const px = baseX + nx * wobble;
+        const py = baseY + ny * wobble;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.shadowColor = `rgba(255,190,0,${glow * 0.5})`;
+      ctx.shadowBlur = 45;
+      ctx.strokeStyle = `rgba(212,160,23,${glow * 0.15})`;
+      ctx.lineWidth = 7;
+      ctx.stroke();
+      ctx.restore();
+
+      // --- Layer 2: Medium core (wavy) ---
+      ctx.save();
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const frac = i / steps;
+        const baseX = ax + dx * frac;
+        const baseY = ay + dy * frac;
+        const wobble = Perlin.noise2D(frac * 5 + time * 1.2, charge * 20 + 50) * 3;
+        const px = baseX + nx * wobble;
+        const py = baseY + ny * wobble;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.shadowColor = `rgba(255,200,50,${glow * 0.7})`;
+      ctx.shadowBlur = 20;
+      ctx.strokeStyle = `rgba(230,180,40,${glow * 0.45})`;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.restore();
+
+      // --- Layer 3: Bright core (slight wobble) ---
+      ctx.save();
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const frac = i / steps;
+        const baseX = ax + dx * frac;
+        const baseY = ay + dy * frac;
+        const wobble = Perlin.noise2D(frac * 6 + time * 1.5, charge * 30 + 100) * 1.5;
+        const px = baseX + nx * wobble;
+        const py = baseY + ny * wobble;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.shadowColor = `rgba(255,220,100,${glow})`;
+      ctx.shadowBlur = 10;
+      ctx.strokeStyle = `rgba(255,210,60,${glow * 0.85})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.restore();
+
+      // --- Spiral filaments wrapping around the beam ---
+      for (let s = 0; s < 2; s++) {
+        ctx.save();
+        ctx.beginPath();
+        const spiralPhase = s * Math.PI + time * 3;
+        for (let i = 0; i <= steps; i++) {
+          const frac = i / steps;
+          const baseX = ax + dx * frac;
+          const baseY = ay + dy * frac;
+          // Helix: sine wave perpendicular to beam
+          const amplitude = 8 + Perlin.noise2D(frac * 3 + time * 0.5, s * 100) * 5;
+          const helixOffset = Math.sin(frac * 12 + spiralPhase) * amplitude * charge;
+          const px = baseX + nx * helixOffset;
+          const py = baseY + ny * helixOffset;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = `rgba(255,200,50,${glow * 0.12})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    function drawHexSegments() {
+      const verts = getHexVertices(hexSize, centerX, centerY);
+      const t = elapsed();
       for (let i = 0; i < 6; i++) {
-        const charge = segmentCharge[i]; // 0→1
-        if (charge < 0.01) continue;
-
         const a = verts[i], b = verts[(i + 1) % 6];
-        const glow = charge * (0.5 + 0.5 * beat);
-
-        // Layer 1: wide bloom
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.shadowColor = `rgba(255,190,0,${glow * 0.5})`;
-        ctx.shadowBlur = 50;
-        ctx.strokeStyle = `rgba(212,160,23,${glow * 0.12})`;
-        ctx.lineWidth = 8;
-        ctx.stroke();
-        ctx.restore();
-
-        // Layer 2: medium
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.shadowColor = `rgba(255,200,50,${glow * 0.6})`;
-        ctx.shadowBlur = 25;
-        ctx.strokeStyle = `rgba(230,180,40,${glow * 0.35})`;
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        ctx.restore();
-
-        // Layer 3: core
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.shadowColor = `rgba(255,220,100,${glow * 0.8})`;
-        ctx.shadowBlur = 12;
-        ctx.strokeStyle = `rgba(255,210,60,${glow * 0.7})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.restore();
+        drawPlasmaBeam(a.x, a.y, b.x, b.y, segmentCharge[i], t + i * 7);
       }
     }
 

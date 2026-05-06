@@ -1128,6 +1128,65 @@ roles:
     </div>
   </section>
 
+  <!-- Fade to dark -->
+  <div class="fade-light-to-dark"></div>
+
+  <!-- Section 5: Better Together -->
+  <section class="section-dark">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s5_eyebrow">Better together</div>
+        <h2 class="section-heading reveal-item" data-i18n="s5_heading">Colmena + Claude Code auto-mode.<br>Different layers. Same mission.</h2>
+
+        <div class="compare-table-wrap reveal-item">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th data-i18n="s5_dim">Dimension</th>
+                <th data-i18n="s5_am">Auto-Mode</th>
+                <th data-i18n="s5_col">Colmena</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-i18n="s5_r1_dim">Decision model</td>
+                <td data-i18n="s5_r1_am">Probabilistic (LLM)</td>
+                <td data-i18n="s5_r1_col">Deterministic (YAML rules)</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r2_dim">Per-call cost</td>
+                <td data-i18n="s5_r2_am">Model tokens per classification</td>
+                <td data-i18n="s5_r2_col">Zero — no network, no LLM</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r3_dim">Explainability</td>
+                <td data-i18n="s5_r3_am">Classifier output (opaque)</td>
+                <td data-i18n="s5_r3_col">Rule ID in audit.log</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r4_dim">Scope</td>
+                <td data-i18n="s5_r4_am">Single-agent intent</td>
+                <td data-i18n="s5_r4_col">Single + multi-agent with auditor</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r5_dim">Accountability</td>
+                <td data-i18n="s5_r5_am">Per tool call</td>
+                <td data-i18n="s5_r5_col">Per agent + per role, ELO over time</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r6_dim">Storage</td>
+                <td data-i18n="s5_r6_am">Cloud-side</td>
+                <td data-i18n="s5_r6_col">Local filesystem (git-versionable)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="reveal-item" style="text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(212,160,23,0.15);max-width:550px;margin-left:auto;margin-right:auto;font-size:0.9rem;line-height:1.6;opacity:0.7;color:var(--bone);" data-i18n="s5_closing">Auto-mode catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have. Colmena enforces the policy you wrote and keeps a tamper-evident local record. Use them together. They're designed to be.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Quick start -->
   <section class="quickstart">
     <div class="quickstart-inner">
@@ -1209,7 +1268,17 @@ roles:
         s3_step3_desc: 'Agents work in parallel. Every tool call evaluated in <15ms. Audit.log on every decision.',
         s3_step4_title: 'Review',
         s3_step4_desc: 'Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.',
-        s3_history_hint: 'Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.'
+        s3_history_hint: 'Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.',
+        s5_eyebrow: 'Better together',
+        s5_heading: 'Colmena + Claude Code auto-mode.<br>Different layers. Same mission.',
+        s5_dim: 'Dimension', s5_am: 'Auto-Mode', s5_col: 'Colmena',
+        s5_r1_dim: 'Decision model', s5_r1_am: 'Probabilistic (LLM)', s5_r1_col: 'Deterministic (YAML rules)',
+        s5_r2_dim: 'Per-call cost', s5_r2_am: 'Model tokens per classification', s5_r2_col: 'Zero — no network, no LLM',
+        s5_r3_dim: 'Explainability', s5_r3_am: 'Classifier output (opaque)', s5_r3_col: 'Rule ID in audit.log',
+        s5_r4_dim: 'Scope', s5_r4_am: 'Single-agent intent', s5_r4_col: 'Single + multi-agent with auditor',
+        s5_r5_dim: 'Accountability', s5_r5_am: 'Per tool call', s5_r5_col: 'Per agent + per role, ELO over time',
+        s5_r6_dim: 'Storage', s5_r6_am: 'Cloud-side', s5_r6_col: 'Local filesystem (git-versionable)',
+        s5_closing: "Auto-mode catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have. Colmena enforces the policy you wrote and keeps a tamper-evident local record. Use them together. They're designed to be."
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
@@ -1266,7 +1335,17 @@ roles:
         s3_step3_desc: 'Los agentes trabajan en paralelo. Cada tool call evaluado en <15ms. Audit.log en cada decisión.',
         s3_step4_title: 'Revisa',
         s3_step4_desc: 'El auditor califica cada artefacto. El ELO se ajusta. La confianza se gana — no se declara.',
-        s3_history_hint: '¿Ya tenés agentes corriendo? mission init --from-history lee audit.log y propone un manifiesto desde tus patrones.'
+        s3_history_hint: '¿Ya tenés agentes corriendo? mission init --from-history lee audit.log y propone un manifiesto desde tus patrones.',
+        s5_eyebrow: 'Mejor juntos',
+        s5_heading: 'Colmena + Claude Code auto-mode.<br>Capas diferentes. Misma misión.',
+        s5_dim: 'Dimensión', s5_am: 'Auto-Mode', s5_col: 'Colmena',
+        s5_r1_dim: 'Modelo de decisión', s5_r1_am: 'Probabilístico (LLM)', s5_r1_col: 'Determinista (reglas YAML)',
+        s5_r2_dim: 'Costo por llamada', s5_r2_am: 'Tokens del modelo por clasificación', s5_r2_col: 'Cero — sin red, sin LLM',
+        s5_r3_dim: 'Explicabilidad', s5_r3_am: 'Salida opaca del clasificador', s5_r3_col: 'Rule ID en audit.log',
+        s5_r4_dim: 'Alcance', s5_r4_am: 'Intención de un solo agente', s5_r4_col: 'Uno + multi-agente con auditor',
+        s5_r5_dim: 'Accountability', s5_r5_am: 'Por tool call', s5_r5_col: 'Por agente + por rol, ELO en el tiempo',
+        s5_r6_dim: 'Almacenamiento', s5_r6_am: 'En la nube', s5_r6_col: 'Sistema de archivos local (git-versionable)',
+        s5_closing: "Auto-mode detecta intención semántica que las reglas no pueden — intentos de prompt injection, sugerencias de borrado masivo, contexto que el agente no debería tener. Colmena hace cumplir la política que escribiste y mantiene un registro local a prueba de manipulaciones. Usalas juntas. Están diseñadas para eso."
       }
     };
 

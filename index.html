@@ -979,6 +979,35 @@
     </a>
   </section>
 
+  <!-- Section 2: The False Tradeoff -->
+  <section class="section-light">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s2_eyebrow">The false tradeoff</div>
+        <h2 class="section-heading reveal-item" data-i18n="s2_heading">AI agents need autonomy.<br>You need control.<br>You shouldn't have to choose.</h2>
+
+        <div class="tradeoff-grid reveal-item">
+          <div class="tradeoff-box">
+            <div class="tradeoff-box-label" data-i18n="s2_box1_label">Manual approval</div>
+            <div class="tradeoff-box-desc" data-i18n="s2_box1_desc">Approve every tool call by hand. Safe, but doesn't scale past one agent.</div>
+          </div>
+          <div class="tradeoff-vs">vs</div>
+          <div class="tradeoff-box">
+            <div class="tradeoff-box-label" data-i18n="s2_box2_label">Blanket allow</div>
+            <div class="tradeoff-box-desc" data-i18n="s2_box2_desc">--dangerously-skip-permissions. Scales, but you're trusting a black box.</div>
+          </div>
+        </div>
+
+        <div class="tradeoff-resolution reveal-item">
+          <p class="tradeoff-resolution-title" data-i18n="s2_resolution_title">Colmena: scoped autonomy.</p>
+          <p style="font-size:0.9rem;line-height:1.55;opacity:0.75;" data-i18n="s2_resolution_desc">Each agent is free <strong>within its domain</strong>. The firewall enforces the boundaries. Every mission has a start, an end, and an evaluation. You stay in control — without the bottleneck.</p>
+        </div>
+
+        <p style="text-align:center;margin-top:2rem;font-size:0.95rem;opacity:0.6;font-family:'Playfair Display',serif;font-style:italic;" class="reveal-item" data-i18n="s2_closing">policy is code, review is mandatory, trust is earned.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Value props -->
   <section class="value-props">
     <div class="value-props-inner">
@@ -1045,7 +1074,16 @@
         vp3_html: '<strong>Local-first.</strong> No cloud classifier. Every decision is explainable by the rule ID written to audit.log.',
         qs_label: 'Quick start',
         complement: 'Complements Claude Code auto-mode. Auto-mode reads intent with a model classifier; Colmena enforces deterministic policy and multi-agent accountability. Different layers — use them together.',
-        cta_footer: 'Star Colmena on GitHub'
+        cta_footer: 'Star Colmena on GitHub',
+        s2_eyebrow: 'The false tradeoff',
+        s2_heading_html: "AI agents need autonomy.<br>You need control.<br>You shouldn't have to choose.",
+        s2_box1_label: 'Manual approval',
+        s2_box1_desc: "Approve every tool call by hand. Safe, but doesn't scale past one agent.",
+        s2_box2_label: 'Blanket allow',
+        s2_box2_desc: "--dangerously-skip-permissions. Scales, but you're trusting a black box.",
+        s2_resolution_title: 'Colmena: scoped autonomy.',
+        s2_resolution_desc_html: 'Each agent is free <strong>within its domain</strong>. The firewall enforces the boundaries. Every mission has a start, an end, and an evaluation. You stay in control — without the bottleneck.',
+        s2_closing: 'policy is code, review is mandatory, trust is earned.'
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
@@ -1065,7 +1103,16 @@
         vp3_html: '<strong>Local-first.</strong> Sin clasificador en la nube. Cada decision es explicable por el ID de la regla escrita en audit.log.',
         qs_label: 'Inicio rapido',
         complement: 'Complementa al auto-mode de Claude Code. Auto-mode lee intencion con un modelo; Colmena aplica politica deterministica y accountability multi-agente. Capas distintas — usalas juntas.',
-        cta_footer: 'Dale una estrella en GitHub'
+        cta_footer: 'Dale una estrella en GitHub',
+        s2_eyebrow: 'La falsa dicotomía',
+        s2_heading_html: "Los agentes IA necesitan autonomía.<br>Vos necesitás control.<br>No deberías tener que elegir.",
+        s2_box1_label: 'Aprobación manual',
+        s2_box1_desc: 'Aprobás cada tool call a mano. Seguro, pero no escala más allá de un agente.',
+        s2_box2_label: 'Permiso total',
+        s2_box2_desc: '--dangerously-skip-permissions. Escala, pero estás confiando en una caja negra.',
+        s2_resolution_title: 'Colmena: autonomía con alcance.',
+        s2_resolution_desc_html: 'Cada agente es libre <strong>dentro de su dominio</strong>. El firewall impone los límites. Cada misión tiene un inicio, un fin y una evaluación. Vos mantenés el control — sin ser el cuello de botella.',
+        s2_closing: 'la política es código, la revisión es obligatoria, la confianza se gana.'
       }
     };
 
@@ -1835,7 +1882,7 @@
     manifestoItems.forEach(el => observer.observe(el));
 
     // === CONTENT REVEAL (value props, quickstart, complement note, CTA) ===
-    const contentItems = document.querySelectorAll('.value-row, .quickstart-inner, .complement-inner, .cta-link');
+    const contentItems = document.querySelectorAll('.value-row, .quickstart-inner, .complement-inner, .cta-link, .reveal-item');
     const contentObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry, idx) => {
         if (entry.isIntersecting) {

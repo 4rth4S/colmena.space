@@ -1008,6 +1008,69 @@
     </div>
   </section>
 
+  <!-- Fade to dark -->
+  <div class="fade-light-to-dark"></div>
+
+  <!-- Section 3: How It Works -->
+  <section class="section-dark">
+    <div class="section-pad">
+      <div class="section-inner" style="max-width:960px;">
+        <div class="section-eyebrow reveal-item" data-i18n="s3_eyebrow">How it works</div>
+        <h2 class="section-heading reveal-item" data-i18n="s3_heading">One YAML file. One command. Full accountability.</h2>
+
+        <div class="how-grid">
+          <!-- Step 1: Define (expanded) -->
+          <div class="how-step how-step-highlight reveal-item">
+            <div class="how-step-num">1</div>
+            <div class="how-step-title" data-i18n="s3_step1_title">Define</div>
+            <div class="how-step-desc" data-i18n="s3_step1_desc">Write a YAML manifest. Pick roles, scope paths, bash patterns, set a TTL.</div>
+            <div class="yaml-preview">mission: review-auth
+pattern: code-review-cycle
+roles:
+  - name: developer
+    scope:
+      paths: [src/auth/]
+  - name: auditor</div>
+            <div class="how-check-list">✓ Auto-validates schema + security
+✓ Generates role prompts + subagent files
+✓ Creates scoped delegations with TTL
+✓ Wires bash_patterns into runtime overrides
+✓ --dry-run to preview before executing</div>
+            <div class="how-step-artifact">mission.yaml</div>
+          </div>
+
+          <!-- Step 2: Spawn -->
+          <div class="how-step reveal-item">
+            <div class="how-step-num">2</div>
+            <div class="how-step-title" data-i18n="s3_step2_title">Spawn</div>
+            <div class="how-step-desc" data-i18n="s3_step2_desc">One command spawns the squad. Each agent gets its role, its tools, its boundaries.</div>
+            <div class="how-step-artifact">colmena mission spawn</div>
+          </div>
+
+          <!-- Step 3: Execute -->
+          <div class="how-step reveal-item">
+            <div class="how-step-num">3</div>
+            <div class="how-step-title" data-i18n="s3_step3_title">Execute</div>
+            <div class="how-step-desc" data-i18n="s3_step3_desc">Agents work in parallel. Every tool call evaluated in &lt;15ms. Audit.log on every decision.</div>
+            <div class="how-step-artifact">ALLOW · ASK · BLOCK</div>
+          </div>
+
+          <!-- Step 4: Review -->
+          <div class="how-step reveal-item">
+            <div class="how-step-num">4</div>
+            <div class="how-step-title" data-i18n="s3_step4_title">Review</div>
+            <div class="how-step-desc" data-i18n="s3_step4_desc">Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.</div>
+            <div class="how-step-artifact">QPC scoring</div>
+          </div>
+        </div>
+
+        <p class="reveal-item" style="text-align:center;margin-top:1.2rem;font-size:0.75rem;opacity:0.35;color:var(--bone);" data-i18n="s3_history_hint">Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.</p>
+
+        <p class="reveal-item" style="text-align:center;margin-top:1rem;opacity:0.25;font-family:monospace;font-size:0.75rem;color:var(--bone);">Define → Spawn → Execute → Review → repeat, with better trust each cycle</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Value props -->
   <section class="value-props">
     <div class="value-props-inner">
@@ -1083,7 +1146,18 @@
         s2_box2_desc: "--dangerously-skip-permissions. Scales, but you're trusting a black box.",
         s2_resolution_title: 'Colmena: scoped autonomy.',
         s2_resolution_desc_html: 'Each agent is free <strong>within its domain</strong>. The firewall enforces the boundaries. Every mission has a start, an end, and an evaluation. You stay in control — without the bottleneck.',
-        s2_closing: 'policy is code, review is mandatory, trust is earned.'
+        s2_closing: 'policy is code, review is mandatory, trust is earned.',
+        s3_eyebrow: 'How it works',
+        s3_heading: 'One YAML file. One command. Full accountability.',
+        s3_step1_title: 'Define',
+        s3_step1_desc: 'Write a YAML manifest. Pick roles, scope paths, bash patterns, set a TTL.',
+        s3_step2_title: 'Spawn',
+        s3_step2_desc: 'One command spawns the squad. Each agent gets its role, its tools, its boundaries.',
+        s3_step3_title: 'Execute',
+        s3_step3_desc: 'Agents work in parallel. Every tool call evaluated in <15ms. Audit.log on every decision.',
+        s3_step4_title: 'Review',
+        s3_step4_desc: 'Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.',
+        s3_history_hint: 'Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.'
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
@@ -1112,7 +1186,18 @@
         s2_box2_desc: '--dangerously-skip-permissions. Escala, pero estás confiando en una caja negra.',
         s2_resolution_title: 'Colmena: autonomía con alcance.',
         s2_resolution_desc_html: 'Cada agente es libre <strong>dentro de su dominio</strong>. El firewall impone los límites. Cada misión tiene un inicio, un fin y una evaluación. Vos mantenés el control — sin ser el cuello de botella.',
-        s2_closing: 'la política es código, la revisión es obligatoria, la confianza se gana.'
+        s2_closing: 'la política es código, la revisión es obligatoria, la confianza se gana.',
+        s3_eyebrow: 'Cómo funciona',
+        s3_heading: 'Un archivo YAML. Un comando. Responsabilidad total.',
+        s3_step1_title: 'Define',
+        s3_step1_desc: 'Escribí un manifiesto YAML. Elegí roles, scope paths, bash patterns, definí un TTL.',
+        s3_step2_title: 'Despliega',
+        s3_step2_desc: 'Un comando lanza el equipo. Cada agente recibe su rol, sus herramientas, sus límites.',
+        s3_step3_title: 'Ejecuta',
+        s3_step3_desc: 'Los agentes trabajan en paralelo. Cada tool call evaluado en <15ms. Audit.log en cada decisión.',
+        s3_step4_title: 'Revisa',
+        s3_step4_desc: 'El auditor califica cada artefacto. El ELO se ajusta. La confianza se gana — no se declara.',
+        s3_history_hint: '¿Ya tenés agentes corriendo? mission init --from-history lee audit.log y propone un manifiesto desde tus patrones.'
       }
     };
 

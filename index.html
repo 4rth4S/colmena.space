@@ -944,6 +944,13 @@
   <div class="content">
     <h1 class="title" id="title">COLMENA</h1>
     <p class="tagline" id="tagline"></p>
+    <p class="tagline-functional" id="taglineFunctional" data-i18n="tagline_functional"></p>
+    <div class="hero-cta-group">
+      <a href="#quickstart" class="cta-primary" data-i18n="cta_quickstart">Quick Start</a>
+      <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="cta-secondary" data-i18n="cta_star">★ Star on GitHub</a>
+      <span class="cta-divider">|</span>
+      <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="cta_docs">Read the Docs →</a>
+    </div>
   </div>
 
   <!-- Scroll indicator -->
@@ -1021,6 +1028,10 @@
     const I18N = {
       en: {
         tagline: 'The swarm learns where to sting.',
+        tagline_functional: 'Define missions. Enforce policy. Earn trust. All local.',
+        cta_quickstart: 'Quick Start',
+        cta_star: '★ Star on GitHub',
+        cta_docs: 'Read the Docs →',
         m1: 'One operator. Many agents. Full control.',
         m2: 'Built in Rust. Local-first. Zero cloud dependencies.',
         m3: '< 15ms latency. Every tool call evaluated.',
@@ -1036,6 +1047,10 @@
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
+        tagline_functional: 'Define misiones. Enforcea política. Gana confianza. Todo local.',
+        cta_quickstart: 'Inicio Rápido',
+        cta_star: '★ Estrella en GitHub',
+        cta_docs: 'Lee la Documentación →',
         m1: 'Un operador. Muchos agentes. Control total.',
         m2: 'Hecho en Rust. Local-first. Cero dependencias en la nube.',
         m3: '< 15ms de latencia. Cada llamada evaluada.',
@@ -1075,6 +1090,10 @@
       const taglineEl = document.getElementById('tagline');
       if (taglineEl.textContent.length > 0) {
         taglineEl.textContent = I18N[lang].tagline;
+      }
+      const fnEl = document.getElementById('taglineFunctional');
+      if (fnEl) {
+        fnEl.textContent = I18N[lang].tagline_functional;
       }
       // Toggle button states
       document.querySelectorAll('.lang-toggle button').forEach(b => {
@@ -1672,6 +1691,11 @@
       if (phase === Phase.REVEAL_TITLE && t >= 7) {
         phase = Phase.REVEAL_TAGLINE;
         typeTagline();
+      }
+      // reveal functional subtitle after typewriter starts
+      if (phase === Phase.REVEAL_TAGLINE && t >= 7.2) {
+        const el = document.getElementById('taglineFunctional');
+        if (el) el.classList.add('visible');
       }
       if (phase === Phase.REVEAL_TAGLINE && t >= 8.5) phase = Phase.STEADY;
 

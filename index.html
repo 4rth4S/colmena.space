@@ -1071,24 +1071,59 @@ roles:
     </div>
   </section>
 
-  <!-- Value props -->
-  <section class="value-props">
-    <div class="value-props-inner">
-      <div class="section-eyebrow" data-i18n="vp_eyebrow">What Colmena gives you</div>
+  <!-- Fade to light -->
+  <div class="fade-dark-to-light"></div>
 
-      <div class="value-row">
-        <div class="value-index">I.</div>
-        <div class="value-body" data-i18n="vp1"><strong>Deterministic governance.</strong> YAML rules, compiled regex, audit.log on every call. Zero LLM calls in the hot path, zero per-call cost.</div>
-      </div>
+  <!-- Section 4: Value Props -->
+  <section class="section-light">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s4_eyebrow">What Colmena gives you</div>
 
-      <div class="value-row">
-        <div class="value-index">II.</div>
-        <div class="value-body" data-i18n="vp2"><strong>Multi-agent missions.</strong> Peer review with QPC scoring. ELO-calibrated trust per role, earned from observed behavior.</div>
-      </div>
+        <!-- Firewall & Policy -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat1_title">Firewall &amp; Policy</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b1">Deterministic YAML rules + compiled regex engine</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b2">&lt;15ms hot path — zero LLM calls, zero per-call cost</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b3">Shell chain guard — blocks &amp;&amp;, ||, ;, $(), backticks</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b4">Mission kill-switch — instant revocation of all delegations</span></div>
+          </div>
+        </div>
 
-      <div class="value-row">
-        <div class="value-index">III.</div>
-        <div class="value-body" data-i18n="vp3"><strong>Local-first.</strong> No cloud classifier. Every decision is explainable by the rule ID written to audit.log.</div>
+        <!-- Multi-Agent Missions -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat2_title">Multi-Agent Missions</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b1">One-command squad spawn with scoped autonomy</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b2">11 orchestration patterns + 7 topologies</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b3">15 built-in roles — pentest, dev, devops, SRE, reviewer...</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b4">Mission Manifest YAML — define once, spawn anywhere</span></div>
+          </div>
+        </div>
+
+        <!-- Trust & Accountability -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat3_title">Trust &amp; Accountability</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b1">Mandatory auditor review — no artifact ships unreviewed</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b2">QPC scoring: Quality + Precision + Comprehensiveness</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b3">ELO trust calibration — 5 tiers, earned from behavior</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b4">Append-only audit.log + findings store + alerts</span></div>
+          </div>
+        </div>
+
+        <!-- Efficiency & Control -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat4_title">Efficiency &amp; Control</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b1">Output filtering — 30-50% token savings on noisy commands</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b2">Terse inter-agent protocol — facts + path:line, minimal tokens</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b3">Runtime delegations with mandatory TTL (max 24h)</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b4">Custom roles &amp; patterns — library is yours to extend</span></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1131,10 +1166,27 @@ roles:
         m4: 'The hive defends the colony.',
         manifesto_bridge: "Colmena doesn't replace your judgment. It codifies it into deterministic rules, executes them in under 15ms, and gives you an audited log of every decision — so you can trust your swarm without watching every move.",
         cta: 'View on GitHub',
-        vp_eyebrow: 'What Colmena gives you',
-        vp1_html: '<strong>Deterministic governance.</strong> YAML rules, compiled regex, audit.log on every call. Zero LLM calls in the hot path, zero per-call cost.',
-        vp2_html: '<strong>Multi-agent missions.</strong> Peer review with QPC scoring. ELO-calibrated trust per role, earned from observed behavior.',
-        vp3_html: '<strong>Local-first.</strong> No cloud classifier. Every decision is explainable by the rule ID written to audit.log.',
+        s4_eyebrow: 'What Colmena gives you',
+        s4_cat1_title: 'Firewall & Policy',
+        s4_cat1_b1: 'Deterministic YAML rules + compiled regex engine',
+        s4_cat1_b2: '<15ms hot path — zero LLM calls, zero per-call cost',
+        s4_cat1_b3: 'Shell chain guard — blocks &&, ||, ;, $(), backticks',
+        s4_cat1_b4: 'Mission kill-switch — instant revocation of all delegations',
+        s4_cat2_title: 'Multi-Agent Missions',
+        s4_cat2_b1: 'One-command squad spawn with scoped autonomy',
+        s4_cat2_b2: '11 orchestration patterns + 7 topologies',
+        s4_cat2_b3: '15 built-in roles — pentest, dev, devops, SRE, reviewer...',
+        s4_cat2_b4: 'Mission Manifest YAML — define once, spawn anywhere',
+        s4_cat3_title: 'Trust & Accountability',
+        s4_cat3_b1: 'Mandatory auditor review — no artifact ships unreviewed',
+        s4_cat3_b2: 'QPC scoring: Quality + Precision + Comprehensiveness',
+        s4_cat3_b3: 'ELO trust calibration — 5 tiers, earned from behavior',
+        s4_cat3_b4: 'Append-only audit.log + findings store + alerts',
+        s4_cat4_title: 'Efficiency & Control',
+        s4_cat4_b1: 'Output filtering — 30-50% token savings on noisy commands',
+        s4_cat4_b2: 'Terse inter-agent protocol — facts + path:line, minimal tokens',
+        s4_cat4_b3: 'Runtime delegations with mandatory TTL (max 24h)',
+        s4_cat4_b4: 'Custom roles & patterns — library is yours to extend',
         qs_label: 'Quick start',
         complement: 'Complements Claude Code auto-mode. Auto-mode reads intent with a model classifier; Colmena enforces deterministic policy and multi-agent accountability. Different layers — use them together.',
         cta_footer: 'Star Colmena on GitHub',
@@ -1171,10 +1223,27 @@ roles:
         m4: 'La colmena defiende la colonia.',
         manifesto_bridge: "Colmena no reemplaza tu criterio. Lo codifica en reglas deterministas, lo ejecuta en menos de 15ms, y te da un log auditado de cada decisión — para que puedas confiar en tu enjambre sin tener que vigilar cada movimiento.",
         cta: 'Ver en GitHub',
-        vp_eyebrow: 'Que te da Colmena',
-        vp1_html: '<strong>Gobernanza deterministica.</strong> Reglas YAML, regex compilada, audit.log en cada llamada. Cero LLM calls en el hot path, cero coste por llamada.',
-        vp2_html: '<strong>Misiones multi-agente.</strong> Peer review con scoring QPC. Trust calibrada por ELO por rol, ganada desde el comportamiento observado.',
-        vp3_html: '<strong>Local-first.</strong> Sin clasificador en la nube. Cada decision es explicable por el ID de la regla escrita en audit.log.',
+        s4_eyebrow: 'Qué te da Colmena',
+        s4_cat1_title: 'Firewall y Política',
+        s4_cat1_b1: 'Reglas YAML deterministas + motor de regex compilado',
+        s4_cat1_b2: '<15ms en hot path — cero llamadas LLM, cero costo por llamada',
+        s4_cat1_b3: 'Chain guard del shell — bloquea &&, ||, ;, $(), backticks',
+        s4_cat1_b4: 'Kill-switch de misión — revocación instantánea de todas las delegaciones',
+        s4_cat2_title: 'Misiones Multi-Agente',
+        s4_cat2_b1: 'Despliegue de equipos con un comando y autonomía acotada',
+        s4_cat2_b2: '11 patrones de orquestación + 7 topologías',
+        s4_cat2_b3: '15 roles predefinidos — pentest, dev, devops, SRE, reviewer...',
+        s4_cat2_b4: 'Mission Manifest YAML — definí una vez, desplegá donde quieras',
+        s4_cat3_title: 'Confianza y Accountability',
+        s4_cat3_b1: 'Revisión de auditoría obligatoria — nada se publica sin revisión',
+        s4_cat3_b2: 'Scoring QPC: Quality + Precision + Comprehensiveness',
+        s4_cat3_b3: 'Calibración de confianza ELO — 5 niveles, ganados con comportamiento',
+        s4_cat3_b4: 'Audit.log + findings store + alerts — todo append-only',
+        s4_cat4_title: 'Eficiencia y Control',
+        s4_cat4_b1: 'Filtrado de output — 30-50% de ahorro de tokens en comandos ruidosos',
+        s4_cat4_b2: 'Protocolo inter-agente escueto — hechos + path:line, tokens mínimos',
+        s4_cat4_b3: 'Delegaciones runtime con TTL obligatorio (máx 24h)',
+        s4_cat4_b4: 'Roles y patrones personalizados — la biblioteca es tuya para extender',
         qs_label: 'Inicio rapido',
         complement: 'Complementa al auto-mode de Claude Code. Auto-mode lee intencion con un modelo; Colmena aplica politica deterministica y accountability multi-agente. Capas distintas — usalas juntas.',
         cta_footer: 'Dale una estrella en GitHub',

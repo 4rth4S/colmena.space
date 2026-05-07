@@ -1187,6 +1187,51 @@ roles:
     </div>
   </section>
 
+  <!-- Fade to light -->
+  <div class="fade-dark-to-light"></div>
+
+  <!-- Section 6: Use Cases -->
+  <section class="section-light">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s6_eyebrow">Who is this for?</div>
+        <h2 class="section-heading reveal-item" data-i18n="s6_heading">Pick your role. Colmena adapts.</h2>
+
+        <div class="usecase-grid">
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x2694;&#xFE0F;</div>
+            <div class="usecase-title" data-i18n="s6_u1_title">Pentest engagement</div>
+            <div class="usecase-desc" data-i18n="s6_u1_desc">Scoped Caido-native agents. Web + API surface covered. Findings store for triage.</div>
+            <div class="usecase-flow">Spawn → Scan → Find → Report → Auditor</div>
+          </div>
+
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x1F4BB;</div>
+            <div class="usecase-title" data-i18n="s6_u2_title">Code review cycle</div>
+            <div class="usecase-desc" data-i18n="s6_u2_desc">Developer → Reviewer → Auditor. Reviewer is read-only. QPC scored. ELO tracking.</div>
+            <div class="usecase-flow">Implement → Review → Score → Calibrate</div>
+          </div>
+
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x2699;&#xFE0F;</div>
+            <div class="usecase-title" data-i18n="s6_u3_title">DevOps kubectl ops</div>
+            <div class="usecase-desc" data-i18n="s6_u3_desc">kubectl + helm + terraform pre-approved. Secrets blocked. Destructive ops gated.</div>
+            <div class="usecase-flow">Delegate → Apply → Audit.log → Deactivate</div>
+          </div>
+
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x1F4E1;</div>
+            <div class="usecase-title" data-i18n="s6_u4_title">SRE runbook execution</div>
+            <div class="usecase-desc" data-i18n="s6_u4_desc">Read-side ops pre-approved. Writes gated. Alerts append-only. Runbook-friendly.</div>
+            <div class="usecase-flow">Investigate → Diagnose → Draft → Incident note</div>
+          </div>
+        </div>
+
+        <p class="usecase-footer reveal-item" data-i18n="s6_footer">Not your profile? Colmena is domain-agnostic. Create your own roles and patterns.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Quick start -->
   <section class="quickstart">
     <div class="quickstart-inner">
@@ -1278,7 +1323,18 @@ roles:
         s5_r4_dim: 'Scope', s5_r4_am: 'Single-agent intent', s5_r4_col: 'Single + multi-agent with auditor',
         s5_r5_dim: 'Accountability', s5_r5_am: 'Per tool call', s5_r5_col: 'Per agent + per role, ELO over time',
         s5_r6_dim: 'Storage', s5_r6_am: 'Cloud-side', s5_r6_col: 'Local filesystem (git-versionable)',
-        s5_closing: "Auto-mode catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have. Colmena enforces the policy you wrote and keeps a tamper-evident local record. Use them together. They're designed to be."
+        s5_closing: "Auto-mode catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have. Colmena enforces the policy you wrote and keeps a tamper-evident local record. Use them together. They're designed to be.",
+        s6_eyebrow: 'Who is this for?',
+        s6_heading: 'Pick your role. Colmena adapts.',
+        s6_u1_title: 'Pentest engagement',
+        s6_u1_desc: 'Scoped Caido-native agents. Web + API surface covered. Findings store for triage.',
+        s6_u2_title: 'Code review cycle',
+        s6_u2_desc: 'Developer → Reviewer → Auditor. Reviewer is read-only. QPC scored. ELO tracking.',
+        s6_u3_title: 'DevOps kubectl ops',
+        s6_u3_desc: 'kubectl + helm + terraform pre-approved. Secrets blocked. Destructive ops gated.',
+        s6_u4_title: 'SRE runbook execution',
+        s6_u4_desc: 'Read-side ops pre-approved. Writes gated. Alerts append-only. Runbook-friendly.',
+        s6_footer: 'Not your profile? Colmena is domain-agnostic. Create your own roles and patterns.'
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
@@ -1345,7 +1401,18 @@ roles:
         s5_r4_dim: 'Alcance', s5_r4_am: 'Intención de un solo agente', s5_r4_col: 'Uno + multi-agente con auditor',
         s5_r5_dim: 'Accountability', s5_r5_am: 'Por tool call', s5_r5_col: 'Por agente + por rol, ELO en el tiempo',
         s5_r6_dim: 'Almacenamiento', s5_r6_am: 'En la nube', s5_r6_col: 'Sistema de archivos local (git-versionable)',
-        s5_closing: "Auto-mode detecta intención semántica que las reglas no pueden — intentos de prompt injection, sugerencias de borrado masivo, contexto que el agente no debería tener. Colmena hace cumplir la política que escribiste y mantiene un registro local a prueba de manipulaciones. Usalas juntas. Están diseñadas para eso."
+        s5_closing: "Auto-mode detecta intención semántica que las reglas no pueden — intentos de prompt injection, sugerencias de borrado masivo, contexto que el agente no debería tener. Colmena hace cumplir la política que escribiste y mantiene un registro local a prueba de manipulaciones. Usalas juntas. Están diseñadas para eso.",
+        s6_eyebrow: '¿Para quién es?',
+        s6_heading: 'Elegí tu rol. Colmena se adapta.',
+        s6_u1_title: 'Pentest',
+        s6_u1_desc: 'Agentes nativos Caido con alcance definido. Cobertura web + API. Findings store para triage.',
+        s6_u2_title: 'Ciclo de code review',
+        s6_u2_desc: 'Developer → Reviewer → Auditor. El reviewer es solo lectura. Scoring QPC. Seguimiento ELO.',
+        s6_u3_title: 'DevOps kubectl ops',
+        s6_u3_desc: 'kubectl + helm + terraform pre-aprobados. Secrets bloqueados. Operaciones destructivas con puerta.',
+        s6_u4_title: 'SRE ejecución de runbooks',
+        s6_u4_desc: 'Operaciones de lectura pre-aprobadas. Escrituras con puerta. Alertas append-only.',
+        s6_footer: '¿No es tu perfil? Colmena es domínio-agnóstico. Creá tus propios roles y patrones.'
       }
     };
 

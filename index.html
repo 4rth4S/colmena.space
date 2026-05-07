@@ -565,6 +565,7 @@
       max-width: 720px;
       margin: 0 auto;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .compare-table {
@@ -674,21 +675,15 @@
       transform: translateY(0);
     }
 
-    /* CTA bar — fixed at bottom, always visible */
+    /* CTA bar — in-page, below hero, inside flow */
     .hero-cta-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
       display: flex;
       gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
       align-items: center;
       pointer-events: auto;
-      padding: 1rem 1.5rem;
-      background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.7), transparent);
+      padding: 2rem 1.5rem 1rem;
     }
 
     /* Manifesto bridge paragraph */
@@ -752,13 +747,20 @@
         grid-template-columns: 1fr;
       }
 
+      .compare-table-wrap {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
       .compare-table {
         font-size: 0.72rem;
+        min-width: 480px;
       }
 
       .compare-table th,
       .compare-table td {
-        padding: 0.4rem 0.5rem;
+        padding: 0.35rem 0.45rem;
       }
 
       .hero-cta-bar {
@@ -793,13 +795,6 @@
     <p class="tagline-functional" id="taglineFunctional" data-i18n="tagline_functional"></p>
   </div>
 
-  <!-- Hero CTAs — below the hexagon, above the fold -->
-  <div class="hero-cta-bar">
-    <a href="#quickstart" class="cta-primary" data-i18n="cta_quickstart">Quick Start</a>
-    <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="cta-secondary" data-i18n="cta_star">★ Star on GitHub</a>
-    <span class="cta-divider">|</span>
-    <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="cta_docs">Read the Docs →</a>
-  </div>
 
   <!-- Scroll indicator -->
   <div class="scroll-hint" id="scrollHint">

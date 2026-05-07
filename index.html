@@ -1232,6 +1232,40 @@ roles:
     </div>
   </section>
 
+  <!-- Fade to dark -->
+  <div class="fade-light-to-dark"></div>
+
+  <!-- Section 7: Quick Start -->
+  <section class="section-dark" id="quickstart">
+    <div class="section-pad">
+      <div class="section-inner" style="max-width:720px;">
+        <div class="section-eyebrow reveal-item" data-i18n="s7_eyebrow">Start in 30 seconds</div>
+
+        <pre class="quickstart-code reveal-item"><span class="prompt">$</span>cargo install colmena-cli colmena-mcp
+<span class="prompt">$</span>colmena setup
+<span class="prompt">$</span>colmena doctor</pre>
+
+        <p class="reveal-item" style="text-align:center;margin-top:1rem;font-size:0.8rem;opacity:0.4;color:var(--bone);" data-i18n="s7_sub">Two commands after install. The firewall is active from now on.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: CTA Footer -->
+  <section class="section-dark" style="padding-bottom:6rem;">
+    <div style="text-align:center;">
+      <div class="section-eyebrow reveal-item" data-i18n="s8_eyebrow">Ready to trust your swarm?</div>
+      <a href="#quickstart" class="cta-primary reveal-item" data-i18n="s8_cta_primary">Quick Start Guide →</a>
+      <div class="cta-row reveal-item" style="margin-top:0.75rem;justify-content:center;">
+        <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="cta-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.955 6.728L22 9.751l-5.334 4.717L18.18 22 12 18.27 5.82 22l1.514-7.532L2 9.751l7.045-1.023L12 2z"/></svg>
+          <span data-i18n="s8_cta_secondary">Star Colmena on GitHub</span>
+        </a>
+        <span class="cta-divider">|</span>
+        <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="s8_cta_tertiary">Read the Docs →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- Quick start -->
   <section class="quickstart">
     <div class="quickstart-inner">
@@ -1334,7 +1368,13 @@ roles:
         s6_u3_desc: 'kubectl + helm + terraform pre-approved. Secrets blocked. Destructive ops gated.',
         s6_u4_title: 'SRE runbook execution',
         s6_u4_desc: 'Read-side ops pre-approved. Writes gated. Alerts append-only. Runbook-friendly.',
-        s6_footer: 'Not your profile? Colmena is domain-agnostic. Create your own roles and patterns.'
+        s6_footer: 'Not your profile? Colmena is domain-agnostic. Create your own roles and patterns.',
+        s7_eyebrow: 'Start in 30 seconds',
+        s7_sub: 'Two commands after install. The firewall is active from now on.',
+        s8_eyebrow: 'Ready to trust your swarm?',
+        s8_cta_primary: 'Quick Start Guide →',
+        s8_cta_secondary: 'Star Colmena on GitHub',
+        s8_cta_tertiary: 'Read the Docs →'
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
@@ -1412,7 +1452,13 @@ roles:
         s6_u3_desc: 'kubectl + helm + terraform pre-aprobados. Secrets bloqueados. Operaciones destructivas con puerta.',
         s6_u4_title: 'SRE ejecución de runbooks',
         s6_u4_desc: 'Operaciones de lectura pre-aprobadas. Escrituras con puerta. Alertas append-only.',
-        s6_footer: '¿No es tu perfil? Colmena es domínio-agnóstico. Creá tus propios roles y patrones.'
+        s6_footer: '¿No es tu perfil? Colmena es domínio-agnóstico. Creá tus propios roles y patrones.',
+        s7_eyebrow: 'Empezá en 30 segundos',
+        s7_sub: 'Dos comandos después de instalar. El firewall está activo desde ahora.',
+        s8_eyebrow: '¿Listo para confiar en tu enjambre?',
+        s8_cta_primary: 'Guía de Inicio Rápido →',
+        s8_cta_secondary: 'Estrella en GitHub',
+        s8_cta_tertiary: 'Leé la Documentación →'
       }
     };
 

@@ -674,19 +674,21 @@
       transform: translateY(0);
     }
 
-    /* Hero CTA bar — below hexagon, fixed at bottom of viewport */
+    /* CTA bar — fixed at bottom, always visible */
     .hero-cta-bar {
       position: fixed;
-      bottom: 4rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
       display: flex;
       gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
       align-items: center;
       pointer-events: auto;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.7), transparent);
     }
 
     /* Manifesto bridge paragraph */
@@ -2027,7 +2029,6 @@ roles:
     // Fade hero elements as user scrolls past hero section
     const heroCanvas = document.getElementById('swarm');
     const heroContent = document.querySelector('.content');
-    const heroCtaBar = document.querySelector('.hero-cta-bar');
     window.addEventListener('scroll', () => {
       const hint = document.getElementById('scrollHint');
       if (hint && window.scrollY > 50) hint.classList.remove('visible');
@@ -2038,7 +2039,6 @@ roles:
       const opacity = 1 - fadeProgress;
       heroCanvas.style.opacity = opacity;
       heroContent.style.opacity = opacity;
-      if (heroCtaBar) heroCtaBar.style.opacity = opacity;
     }, { passive: true });
 
     // === MANIFESTO REVEAL — IntersectionObserver ===

@@ -235,6 +235,549 @@
       height: 20px;
       fill: currentColor;
     }
+
+    .section-eyebrow {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--amber-muted);
+      opacity: 0.75;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .quickstart-code {
+      background: rgba(20,15,0,0.55);
+      border: 1px solid rgba(212,160,23,0.18);
+      padding: 1.4rem 1.6rem;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: clamp(0.78rem, 1.5vw, 0.95rem);
+      line-height: 1.9;
+      color: var(--bone);
+      letter-spacing: 0;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .quickstart-code .prompt {
+      color: var(--amber-muted);
+      margin-right: 0.6rem;
+      user-select: none;
+    }
+
+    /* Section background alternation */
+    .section-dark {
+      position: relative;
+      z-index: 5;
+      background: var(--black);
+    }
+
+    .section-light {
+      position: relative;
+      z-index: 5;
+      background: #E8DDD0;
+      color: #1a1a1a;
+    }
+
+    /* Transition gradients between sections */
+    .fade-dark-to-light {
+      position: relative;
+      z-index: 6;
+      height: 12vh;
+      background: linear-gradient(to bottom, var(--black), #E8DDD0);
+    }
+
+    .fade-light-to-dark {
+      position: relative;
+      z-index: 6;
+      height: 12vh;
+      background: linear-gradient(to bottom, #E8DDD0, var(--black));
+    }
+
+    .section-pad {
+      padding: 5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section-inner {
+      width: 100%;
+      max-width: 880px;
+    }
+
+    .section-eyebrow {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--amber-muted);
+      opacity: 0.75;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      line-height: 1.3;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+    }
+
+    .section-light .section-eyebrow { color: var(--amber-muted); opacity: 0.8; }
+    .section-light .section-heading { color: #1a1a1a; }
+    .section-dark .section-heading { color: var(--bone); }
+
+    /* CTA hierarchy */
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cta-primary {
+      display: inline-block;
+      background: transparent;
+      color: var(--gold-dark);
+      padding: 0.7rem 2rem;
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      letter-spacing: 0.08em;
+      border: 1.5px solid var(--gold-dark);
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-primary:hover {
+      background: var(--gold-dark);
+      color: var(--black);
+      box-shadow: 0 0 24px rgba(212,160,23,0.3);
+    }
+
+    .cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--amber-muted);
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+      letter-spacing: 0.08em;
+      padding: 0.6rem 1.5rem;
+      border: 1px solid rgba(212,160,23,0.3);
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .cta-secondary:hover {
+      color: var(--gold-dark);
+      border-color: var(--gold-dark);
+      background: rgba(212,160,23,0.08);
+    }
+
+    .cta-subtle {
+      color: rgba(245,240,232,0.45);
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+      transition: color 0.3s ease;
+    }
+
+    .cta-subtle:hover {
+      color: var(--bone);
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .cta-divider {
+      color: rgba(245,240,232,0.15);
+    }
+
+    /* False tradeoff comparison boxes */
+    .tradeoff-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+      max-width: 650px;
+      margin: 2rem auto;
+    }
+
+    .tradeoff-box {
+      text-align: center;
+      padding: 1.2rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.02);
+    }
+
+    .tradeoff-box-label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      color: #1a1a1a;
+    }
+
+    .tradeoff-box-desc {
+      font-size: 0.82rem;
+      opacity: 0.6;
+      line-height: 1.4;
+    }
+
+    .tradeoff-vs {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--amber-muted);
+      font-size: 1rem;
+    }
+
+    .tradeoff-resolution {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(212,160,23,0.3);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tradeoff-resolution-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--amber-muted);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* How It Works 4-step grid */
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      gap: 0.8rem;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .how-step {
+      text-align: center;
+      padding: 1.2rem 0.8rem;
+      border: 1px solid rgba(212,160,23,0.1);
+      color: var(--bone);
+    }
+
+    .how-step-highlight {
+      border: 1px solid rgba(212,160,23,0.35);
+      background: rgba(212,160,23,0.04);
+    }
+
+    .how-step-num {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--gold-dark);
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .how-step-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .how-step-desc {
+      font-size: 0.78rem;
+      opacity: 0.55;
+      line-height: 1.45;
+      margin-bottom: 0.5rem;
+    }
+
+    .how-step-artifact {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.68rem;
+      color: var(--amber-muted);
+    }
+
+    /* YAML preview block inside step 1 */
+    .yaml-preview {
+      background: rgba(10,8,0,0.6);
+      border: 1px solid rgba(212,160,23,0.2);
+      padding: 0.6rem 0.7rem;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.62rem;
+      line-height: 1.55;
+      color: rgba(245,240,232,0.78);
+      text-align: left;
+      margin-bottom: 0.5rem;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .how-check-list {
+      font-size: 0.65rem;
+      opacity: 0.35;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    /* Value props categories */
+    .vp-category {
+      margin-bottom: 2rem;
+      border-left: 3px solid var(--gold-dark);
+      padding-left: 1.2rem;
+    }
+
+    .vp-category-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--amber-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .vp-bullet-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem 2rem;
+    }
+
+    .vp-bullet {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #1a1a1a;
+      opacity: 0.85;
+    }
+
+    .vp-bullet-dot {
+      color: var(--gold-dark);
+    }
+
+    /* Comparison table (Colmena vs Auto-Mode) */
+    .compare-table-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      color: var(--bone);
+    }
+
+    .compare-table thead tr {
+      border-bottom: 1px solid rgba(212,160,23,0.3);
+    }
+
+    .compare-table th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      font-weight: 400;
+    }
+
+    .compare-table th:first-child {
+      color: var(--amber-muted);
+      font-style: italic;
+    }
+
+    .compare-table th:nth-child(2) {
+      color: rgba(245,240,232,0.5);
+    }
+
+    .compare-table th:nth-child(3) {
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    .compare-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid rgba(212,160,23,0.08);
+    }
+
+    .compare-table td:first-child {
+      opacity: 0.7;
+    }
+
+    .compare-table td:nth-child(2) {
+      opacity: 0.5;
+    }
+
+    .compare-table td:nth-child(3) {
+      color: var(--gold-dark);
+    }
+
+    /* Use cases grid */
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .usecase-card {
+      background: rgba(212,160,23,0.04);
+      border: 1px solid rgba(212,160,23,0.1);
+      padding: 1.3rem;
+      color: #1a1a1a;
+    }
+
+    .usecase-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .usecase-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .usecase-desc {
+      font-size: 0.8rem;
+      opacity: 0.6;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+    }
+
+    .usecase-flow {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.65rem;
+      color: var(--amber-muted);
+    }
+
+    .usecase-footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      opacity: 0.4;
+      color: #1a1a1a;
+    }
+
+    /* Reveal animation for all new sections */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-item.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* CTA bar — in-page, below hero, inside flow */
+    .hero-cta-bar {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+      pointer-events: auto;
+      padding: 2rem 1.5rem 1rem;
+    }
+
+    /* Manifesto bridge paragraph */
+    .manifesto-bridge {
+      font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+      font-weight: 400;
+      color: rgba(245,240,232,0.45);
+      letter-spacing: 0.03em;
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      text-align: center;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    .manifesto-bridge.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Functional tagline */
+    .tagline-functional {
+      font-size: clamp(0.8rem, 1.8vw, 1rem);
+      font-weight: 400;
+      color: rgba(245,240,232,0.6);
+      letter-spacing: 0.05em;
+      margin-top: 0.6rem;
+      min-height: 1.3em;
+      text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7);
+      transition: opacity 0.8s ease;
+      opacity: 0;
+    }
+
+    .tagline-functional.visible {
+      opacity: 1;
+    }
+
+    /* Mobile overrides */
+    @media (max-width: 767px) {
+      .how-grid {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+      }
+
+      .tradeoff-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tradeoff-vs {
+        text-align: center;
+        padding: 0.3rem 0;
+      }
+
+      .vp-bullet-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .usecase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-table-wrap {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .compare-table {
+        font-size: 0.72rem;
+        min-width: 480px;
+      }
+
+      .compare-table th,
+      .compare-table td {
+        padding: 0.35rem 0.45rem;
+      }
+
+      .hero-cta-bar {
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .cta-row {
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .cta-divider {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -250,7 +793,9 @@
   <div class="content">
     <h1 class="title" id="title">COLMENA</h1>
     <p class="tagline" id="tagline"></p>
+    <p class="tagline-functional" id="taglineFunctional" data-i18n="tagline_functional"></p>
   </div>
+
 
   <!-- Scroll indicator -->
   <div class="scroll-hint" id="scrollHint">
@@ -271,30 +816,474 @@
     <div class="manifesto-line" data-i18n="m2">Built in Rust. Local-first. Zero cloud dependencies.</div>
     <div class="manifesto-line dim" data-i18n="m3">&lt; 15ms latency. Every tool call evaluated.</div>
     <div class="manifesto-line accent" data-i18n="m4">The hive defends the colony.</div>
+    <p class="manifesto-bridge" data-i18n="manifesto_bridge"></p>
     <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="repo-link">
       <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       <span data-i18n="cta">View on GitHub</span>
     </a>
   </section>
 
+  <!-- Fade to light -->
+  <div class="fade-dark-to-light"></div>
+
+  <!-- Section 2: The False Tradeoff -->
+  <section class="section-light">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s2_eyebrow">The false tradeoff</div>
+        <h2 class="section-heading reveal-item" data-i18n="s2_heading">AI agents need autonomy.<br>You need control.<br>You shouldn't have to choose.</h2>
+
+        <div class="tradeoff-grid reveal-item">
+          <div class="tradeoff-box">
+            <div class="tradeoff-box-label" data-i18n="s2_box1_label">Manual approval</div>
+            <div class="tradeoff-box-desc" data-i18n="s2_box1_desc">Approve every tool call by hand. Safe, but doesn't scale past one agent.</div>
+          </div>
+          <div class="tradeoff-vs">vs</div>
+          <div class="tradeoff-box">
+            <div class="tradeoff-box-label" data-i18n="s2_box2_label">Blanket allow</div>
+            <div class="tradeoff-box-desc" data-i18n="s2_box2_desc">--dangerously-skip-permissions. Scales, but you're trusting a black box.</div>
+          </div>
+        </div>
+
+        <div class="tradeoff-resolution reveal-item">
+          <p class="tradeoff-resolution-title" data-i18n="s2_resolution_title">Colmena: scoped autonomy.</p>
+          <p style="font-size:0.9rem;line-height:1.55;opacity:0.75;" data-i18n="s2_resolution_desc">Each agent is free <strong>within its domain</strong>. The firewall enforces the boundaries. Every mission has a start, an end, and an evaluation. You stay in control — without the bottleneck.</p>
+        </div>
+
+        <p style="text-align:center;margin-top:2rem;font-size:0.95rem;opacity:0.6;font-family:'Playfair Display',serif;font-style:italic;" class="reveal-item" data-i18n="s2_closing">policy is code, review is mandatory, trust is earned.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fade to dark -->
+  <div class="fade-light-to-dark"></div>
+
+  <!-- Section 3: How It Works -->
+  <section class="section-dark">
+    <div class="section-pad">
+      <div class="section-inner" style="max-width:960px;">
+        <div class="section-eyebrow reveal-item" data-i18n="s3_eyebrow">How it works</div>
+        <h2 class="section-heading reveal-item" data-i18n="s3_heading">One YAML file. One command. Full accountability.</h2>
+
+        <div class="how-grid">
+          <!-- Step 1: Define (expanded) -->
+          <div class="how-step how-step-highlight reveal-item">
+            <div class="how-step-num">1</div>
+            <div class="how-step-title" data-i18n="s3_step1_title">Define</div>
+            <div class="how-step-desc" data-i18n="s3_step1_desc">Write a YAML manifest. Pick roles, scope paths, bash patterns, set a TTL.</div>
+            <div class="yaml-preview">mission: review-auth
+pattern: code-review-cycle
+roles:
+  - name: developer
+    scope:
+      paths: [src/auth/]
+  - name: auditor</div>
+            <div class="how-check-list">✓ Auto-validates schema + security
+✓ Generates role prompts + subagent files
+✓ Creates scoped delegations with TTL
+✓ Wires bash_patterns into runtime overrides
+✓ --dry-run to preview before executing</div>
+            <div class="how-step-artifact">mission.yaml</div>
+          </div>
+
+          <!-- Step 2: Spawn -->
+          <div class="how-step reveal-item">
+            <div class="how-step-num">2</div>
+            <div class="how-step-title" data-i18n="s3_step2_title">Spawn</div>
+            <div class="how-step-desc" data-i18n="s3_step2_desc">One command spawns the squad. Each agent gets its role, its tools, its boundaries.</div>
+            <div class="how-step-artifact">colmena mission spawn</div>
+          </div>
+
+          <!-- Step 3: Execute -->
+          <div class="how-step reveal-item">
+            <div class="how-step-num">3</div>
+            <div class="how-step-title" data-i18n="s3_step3_title">Execute</div>
+            <div class="how-step-desc" data-i18n="s3_step3_desc">Agents work in parallel. Every tool call evaluated in &lt;15ms. Audit.log on every decision.</div>
+            <div class="how-step-artifact">ALLOW · ASK · BLOCK</div>
+          </div>
+
+          <!-- Step 4: Review -->
+          <div class="how-step reveal-item">
+            <div class="how-step-num">4</div>
+            <div class="how-step-title" data-i18n="s3_step4_title">Review</div>
+            <div class="how-step-desc" data-i18n="s3_step4_desc">Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.</div>
+            <div class="how-step-artifact">QPC scoring</div>
+          </div>
+        </div>
+
+        <p class="reveal-item" style="text-align:center;margin-top:1.2rem;font-size:0.75rem;opacity:0.35;color:var(--bone);" data-i18n="s3_history_hint">Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.</p>
+
+        <p class="reveal-item" style="text-align:center;margin-top:1rem;opacity:0.25;font-family:monospace;font-size:0.75rem;color:var(--bone);">Define → Spawn → Execute → Review → repeat, with better trust each cycle</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fade to light -->
+  <div class="fade-dark-to-light"></div>
+
+  <!-- Section 4: Value Props -->
+  <section class="section-light">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s4_eyebrow">What Colmena gives you</div>
+
+        <!-- Firewall & Policy -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat1_title">Firewall &amp; Policy</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b1">Deterministic YAML rules + compiled regex engine</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b2">&lt;15ms hot path — zero LLM calls, zero per-call cost</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b3">Shell chain guard — blocks &amp;&amp;, ||, ;, $(), backticks</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b4">Mission kill-switch — instant revocation of all delegations</span></div>
+          </div>
+        </div>
+
+        <!-- Multi-Agent Missions -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat2_title">Multi-Agent Missions</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b1">One-command squad spawn with scoped autonomy</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b2">11 orchestration patterns + 7 topologies</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b3">15 built-in roles — pentest, dev, devops, SRE, reviewer...</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat2_b4">Mission Manifest YAML — define once, spawn anywhere</span></div>
+          </div>
+        </div>
+
+        <!-- Trust & Accountability -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat3_title">Trust &amp; Accountability</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b1">Mandatory auditor review — no artifact ships unreviewed</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b2">QPC scoring: Quality + Precision + Comprehensiveness</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b3">ELO trust calibration — 5 tiers, earned from behavior</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat3_b4">Append-only audit.log + findings store + alerts</span></div>
+          </div>
+        </div>
+
+        <!-- Efficiency & Control -->
+        <div class="vp-category reveal-item">
+          <h3 class="vp-category-title" data-i18n="s4_cat4_title">Efficiency &amp; Control</h3>
+          <div class="vp-bullet-grid">
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b1">Output filtering — 30-50% token savings on noisy commands</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b2">Terse inter-agent protocol — facts + path:line, minimal tokens</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b3">Runtime delegations with mandatory TTL (max 24h)</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat4_b4">Custom roles &amp; patterns — library is yours to extend</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Fade to dark -->
+  <div class="fade-light-to-dark"></div>
+
+  <!-- Section 5: Better Together -->
+  <section class="section-dark">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s5_eyebrow">Better together</div>
+        <h2 class="section-heading reveal-item" data-i18n="s5_heading">Colmena + Claude Code auto-mode.<br>Different layers. Same mission.</h2>
+
+        <div class="compare-table-wrap reveal-item">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th data-i18n="s5_dim">Dimension</th>
+                <th data-i18n="s5_am">Auto-Mode</th>
+                <th data-i18n="s5_col">Colmena</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-i18n="s5_r1_dim">Decision model</td>
+                <td data-i18n="s5_r1_am">Probabilistic (LLM)</td>
+                <td data-i18n="s5_r1_col">Deterministic (YAML rules)</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r2_dim">Per-call cost</td>
+                <td data-i18n="s5_r2_am">Model tokens per classification</td>
+                <td data-i18n="s5_r2_col">Zero — no network, no LLM</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r3_dim">Explainability</td>
+                <td data-i18n="s5_r3_am">Classifier output (opaque)</td>
+                <td data-i18n="s5_r3_col">Rule ID in audit.log</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r4_dim">Scope</td>
+                <td data-i18n="s5_r4_am">Single-agent intent</td>
+                <td data-i18n="s5_r4_col">Single + multi-agent with auditor</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r5_dim">Accountability</td>
+                <td data-i18n="s5_r5_am">Per tool call</td>
+                <td data-i18n="s5_r5_col">Per agent + per role, ELO over time</td>
+              </tr>
+              <tr>
+                <td data-i18n="s5_r6_dim">Storage</td>
+                <td data-i18n="s5_r6_am">Cloud-side</td>
+                <td data-i18n="s5_r6_col">Local filesystem (git-versionable)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="reveal-item" style="text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(212,160,23,0.15);max-width:550px;margin-left:auto;margin-right:auto;font-size:0.9rem;line-height:1.6;opacity:0.7;color:var(--bone);" data-i18n="s5_closing">Auto-mode catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have. Colmena enforces the policy you wrote and keeps a tamper-evident local record. Use them together. They're designed to be.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fade to light -->
+  <div class="fade-dark-to-light"></div>
+
+  <!-- Section 6: Use Cases -->
+  <section class="section-light">
+    <div class="section-pad">
+      <div class="section-inner">
+        <div class="section-eyebrow reveal-item" data-i18n="s6_eyebrow">Who is this for?</div>
+        <h2 class="section-heading reveal-item" data-i18n="s6_heading">Pick your role. Colmena adapts.</h2>
+
+        <div class="usecase-grid">
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x2694;&#xFE0F;</div>
+            <div class="usecase-title" data-i18n="s6_u1_title">Pentest engagement</div>
+            <div class="usecase-desc" data-i18n="s6_u1_desc">Scoped Caido-native agents. Web + API surface covered. Findings store for triage.</div>
+            <div class="usecase-flow">Spawn → Scan → Find → Report → Auditor</div>
+          </div>
+
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x1F4BB;</div>
+            <div class="usecase-title" data-i18n="s6_u2_title">Code review cycle</div>
+            <div class="usecase-desc" data-i18n="s6_u2_desc">Developer → Reviewer → Auditor. Reviewer is read-only. QPC scored. ELO tracking.</div>
+            <div class="usecase-flow">Implement → Review → Score → Calibrate</div>
+          </div>
+
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x2699;&#xFE0F;</div>
+            <div class="usecase-title" data-i18n="s6_u3_title">DevOps kubectl ops</div>
+            <div class="usecase-desc" data-i18n="s6_u3_desc">kubectl + helm + terraform pre-approved. Secrets blocked. Destructive ops gated.</div>
+            <div class="usecase-flow">Delegate → Apply → Audit.log → Deactivate</div>
+          </div>
+
+          <div class="usecase-card reveal-item">
+            <div class="usecase-icon">&#x1F4E1;</div>
+            <div class="usecase-title" data-i18n="s6_u4_title">SRE runbook execution</div>
+            <div class="usecase-desc" data-i18n="s6_u4_desc">Read-side ops pre-approved. Writes gated. Alerts append-only. Runbook-friendly.</div>
+            <div class="usecase-flow">Investigate → Diagnose → Draft → Incident note</div>
+          </div>
+        </div>
+
+        <p class="usecase-footer reveal-item" data-i18n="s6_footer">Not your profile? Colmena is domain-agnostic. Create your own roles and patterns.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fade to dark -->
+  <div class="fade-light-to-dark"></div>
+
+  <!-- Section 7: Quick Start -->
+  <section class="section-dark" id="quickstart">
+    <div class="section-pad">
+      <div class="section-inner" style="max-width:720px;">
+        <div class="section-eyebrow reveal-item" data-i18n="s7_eyebrow">Start in 30 seconds</div>
+
+        <pre class="quickstart-code reveal-item"><span class="prompt">$</span>cargo install colmena-cli colmena-mcp
+<span class="prompt">$</span>colmena setup
+<span class="prompt">$</span>colmena doctor</pre>
+
+        <p class="reveal-item" style="text-align:center;margin-top:1rem;font-size:0.8rem;opacity:0.4;color:var(--bone);" data-i18n="s7_sub">Two commands after install. The firewall is active from now on.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: CTA Footer -->
+  <section class="section-dark" style="padding-bottom:6rem;">
+    <div style="text-align:center;">
+      <div class="section-eyebrow reveal-item" data-i18n="s8_eyebrow">Ready to trust your swarm?</div>
+      <a href="#quickstart" class="cta-primary reveal-item" data-i18n="s8_cta_primary">Quick Start Guide →</a>
+      <div class="cta-row reveal-item" style="margin-top:0.75rem;justify-content:center;">
+        <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="cta-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.955 6.728L22 9.751l-5.334 4.717L18.18 22 12 18.27 5.82 22l1.514-7.532L2 9.751l7.045-1.023L12 2z"/></svg>
+          <span data-i18n="s8_cta_secondary">Star Colmena on GitHub</span>
+        </a>
+        <span class="cta-divider">|</span>
+        <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="s8_cta_tertiary">Read the Docs →</a>
+      </div>
+    </div>
+  </section>
+
+
   <script>
     // === I18N ===
     const I18N = {
       en: {
         tagline: 'The swarm learns where to sting.',
+        tagline_functional: 'Define missions. Enforce policy. Earn trust. All local.',
+        cta_quickstart: 'Quick Start',
+        cta_star: '★ Star on GitHub',
+        cta_docs: 'Read the Docs →',
         m1: 'One operator. Many agents. Full control.',
         m2: 'Built in Rust. Local-first. Zero cloud dependencies.',
         m3: '< 15ms latency. Every tool call evaluated.',
         m4: 'The hive defends the colony.',
-        cta: 'View on GitHub'
+        manifesto_bridge: "Colmena doesn't replace your judgment. It codifies it into deterministic rules, executes them in under 15ms, and gives you an audited log of every decision — so you can trust your swarm without watching every move.",
+        cta: 'View on GitHub',
+        s4_eyebrow: 'What Colmena gives you',
+        s4_cat1_title: 'Firewall & Policy',
+        s4_cat1_b1: 'Deterministic YAML rules + compiled regex engine',
+        s4_cat1_b2: '<15ms hot path — zero LLM calls, zero per-call cost',
+        s4_cat1_b3: 'Shell chain guard — blocks &&, ||, ;, $(), backticks',
+        s4_cat1_b4: 'Mission kill-switch — instant revocation of all delegations',
+        s4_cat2_title: 'Multi-Agent Missions',
+        s4_cat2_b1: 'One-command squad spawn with scoped autonomy',
+        s4_cat2_b2: '11 orchestration patterns + 7 topologies',
+        s4_cat2_b3: '15 built-in roles — pentest, dev, devops, SRE, reviewer...',
+        s4_cat2_b4: 'Mission Manifest YAML — define once, spawn anywhere',
+        s4_cat3_title: 'Trust & Accountability',
+        s4_cat3_b1: 'Mandatory auditor review — no artifact ships unreviewed',
+        s4_cat3_b2: 'QPC scoring: Quality + Precision + Comprehensiveness',
+        s4_cat3_b3: 'ELO trust calibration — 5 tiers, earned from behavior',
+        s4_cat3_b4: 'Append-only audit.log + findings store + alerts',
+        s4_cat4_title: 'Efficiency & Control',
+        s4_cat4_b1: 'Output filtering — 30-50% token savings on noisy commands',
+        s4_cat4_b2: 'Terse inter-agent protocol — facts + path:line, minimal tokens',
+        s4_cat4_b3: 'Runtime delegations with mandatory TTL (max 24h)',
+        s4_cat4_b4: 'Custom roles & patterns — library is yours to extend',
+        qs_label: 'Quick start',
+        complement: 'Complements Claude Code auto-mode. Auto-mode reads intent with a model classifier; Colmena enforces deterministic policy and multi-agent accountability. Different layers — use them together.',
+        cta_footer: 'Star Colmena on GitHub',
+        s2_eyebrow: 'The false tradeoff',
+        s2_heading_html: "AI agents need autonomy.<br>You need control.<br>You shouldn't have to choose.",
+        s2_box1_label: 'Manual approval',
+        s2_box1_desc: "Approve every tool call by hand. Safe, but doesn't scale past one agent.",
+        s2_box2_label: 'Blanket allow',
+        s2_box2_desc: "--dangerously-skip-permissions. Scales, but you're trusting a black box.",
+        s2_resolution_title: 'Colmena: scoped autonomy.',
+        s2_resolution_desc_html: 'Each agent is free <strong>within its domain</strong>. The firewall enforces the boundaries. Every mission has a start, an end, and an evaluation. You stay in control — without the bottleneck.',
+        s2_closing: 'policy is code, review is mandatory, trust is earned.',
+        s3_eyebrow: 'How it works',
+        s3_heading: 'One YAML file. One command. Full accountability.',
+        s3_step1_title: 'Define',
+        s3_step1_desc: 'Write a YAML manifest. Pick roles, scope paths, bash patterns, set a TTL.',
+        s3_step2_title: 'Spawn',
+        s3_step2_desc: 'One command spawns the squad. Each agent gets its role, its tools, its boundaries.',
+        s3_step3_title: 'Execute',
+        s3_step3_desc: 'Agents work in parallel. Every tool call evaluated in <15ms. Audit.log on every decision.',
+        s3_step4_title: 'Review',
+        s3_step4_desc: 'Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.',
+        s3_history_hint: 'Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.',
+        s5_eyebrow: 'Better together',
+        s5_heading_html: 'Colmena + Claude Code auto-mode.<br>Different layers. Same mission.',
+        s5_dim: 'Dimension', s5_am: 'Auto-Mode', s5_col: 'Colmena',
+        s5_r1_dim: 'Decision model', s5_r1_am: 'Probabilistic (LLM)', s5_r1_col: 'Deterministic (YAML rules)',
+        s5_r2_dim: 'Per-call cost', s5_r2_am: 'Model tokens per classification', s5_r2_col: 'Zero — no network, no LLM',
+        s5_r3_dim: 'Explainability', s5_r3_am: 'Classifier output (opaque)', s5_r3_col: 'Rule ID in audit.log',
+        s5_r4_dim: 'Scope', s5_r4_am: 'Single-agent intent', s5_r4_col: 'Single + multi-agent with auditor',
+        s5_r5_dim: 'Accountability', s5_r5_am: 'Per tool call', s5_r5_col: 'Per agent + per role, ELO over time',
+        s5_r6_dim: 'Storage', s5_r6_am: 'Cloud-side', s5_r6_col: 'Local filesystem (git-versionable)',
+        s5_closing: "Auto-mode catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have. Colmena enforces the policy you wrote and keeps a tamper-evident local record. Use them together. They're designed to be.",
+        s6_eyebrow: 'Who is this for?',
+        s6_heading: 'Pick your role. Colmena adapts.',
+        s6_u1_title: 'Pentest engagement',
+        s6_u1_desc: 'Scoped Caido-native agents. Web + API surface covered. Findings store for triage.',
+        s6_u2_title: 'Code review cycle',
+        s6_u2_desc: 'Developer → Reviewer → Auditor. Reviewer is read-only. QPC scored. ELO tracking.',
+        s6_u3_title: 'DevOps kubectl ops',
+        s6_u3_desc: 'kubectl + helm + terraform pre-approved. Secrets blocked. Destructive ops gated.',
+        s6_u4_title: 'SRE runbook execution',
+        s6_u4_desc: 'Read-side ops pre-approved. Writes gated. Alerts append-only. Runbook-friendly.',
+        s6_footer: 'Not your profile? Colmena is domain-agnostic. Create your own roles and patterns.',
+        s7_eyebrow: 'Start in 30 seconds',
+        s7_sub: 'Two commands after install. The firewall is active from now on.',
+        s8_eyebrow: 'Ready to trust your swarm?',
+        s8_cta_primary: 'Quick Start Guide →',
+        s8_cta_secondary: 'Star Colmena on GitHub',
+        s8_cta_tertiary: 'Read the Docs →'
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
+        tagline_functional: 'Define misiones. Enforcea política. Gana confianza. Todo local.',
+        cta_quickstart: 'Inicio Rápido',
+        cta_star: '★ Estrella en GitHub',
+        cta_docs: 'Lee la Documentación →',
         m1: 'Un operador. Muchos agentes. Control total.',
         m2: 'Hecho en Rust. Local-first. Cero dependencias en la nube.',
         m3: '< 15ms de latencia. Cada llamada evaluada.',
         m4: 'La colmena defiende la colonia.',
-        cta: 'Ver en GitHub'
+        manifesto_bridge: "Colmena no reemplaza tu criterio. Lo codifica en reglas deterministas, lo ejecuta en menos de 15ms, y te da un log auditado de cada decisión — para que puedas confiar en tu enjambre sin tener que vigilar cada movimiento.",
+        cta: 'Ver en GitHub',
+        s4_eyebrow: 'Qué te da Colmena',
+        s4_cat1_title: 'Firewall y Política',
+        s4_cat1_b1: 'Reglas YAML deterministas + motor de regex compilado',
+        s4_cat1_b2: '<15ms en hot path — cero llamadas LLM, cero costo por llamada',
+        s4_cat1_b3: 'Chain guard del shell — bloquea &&, ||, ;, $(), backticks',
+        s4_cat1_b4: 'Kill-switch de misión — revocación instantánea de todas las delegaciones',
+        s4_cat2_title: 'Misiones Multi-Agente',
+        s4_cat2_b1: 'Despliegue de equipos con un comando y autonomía acotada',
+        s4_cat2_b2: '11 patrones de orquestación + 7 topologías',
+        s4_cat2_b3: '15 roles predefinidos — pentest, dev, devops, SRE, reviewer...',
+        s4_cat2_b4: 'Mission Manifest YAML — definí una vez, desplegá donde quieras',
+        s4_cat3_title: 'Confianza y Accountability',
+        s4_cat3_b1: 'Revisión de auditoría obligatoria — nada se publica sin revisión',
+        s4_cat3_b2: 'Scoring QPC: Quality + Precision + Comprehensiveness',
+        s4_cat3_b3: 'Calibración de confianza ELO — 5 niveles, ganados con comportamiento',
+        s4_cat3_b4: 'Audit.log + findings store + alerts — todo append-only',
+        s4_cat4_title: 'Eficiencia y Control',
+        s4_cat4_b1: 'Filtrado de output — 30-50% de ahorro de tokens en comandos ruidosos',
+        s4_cat4_b2: 'Protocolo inter-agente escueto — hechos + path:line, tokens mínimos',
+        s4_cat4_b3: 'Delegaciones runtime con TTL obligatorio (máx 24h)',
+        s4_cat4_b4: 'Roles y patrones personalizados — la biblioteca es tuya para extender',
+        qs_label: 'Inicio rapido',
+        complement: 'Complementa al auto-mode de Claude Code. Auto-mode lee intencion con un modelo; Colmena aplica politica deterministica y accountability multi-agente. Capas distintas — usalas juntas.',
+        cta_footer: 'Dale una estrella en GitHub',
+        s2_eyebrow: 'La falsa dicotomía',
+        s2_heading_html: "Los agentes IA necesitan autonomía.<br>Vos necesitás control.<br>No deberías tener que elegir.",
+        s2_box1_label: 'Aprobación manual',
+        s2_box1_desc: 'Aprobás cada tool call a mano. Seguro, pero no escala más allá de un agente.',
+        s2_box2_label: 'Permiso total',
+        s2_box2_desc: '--dangerously-skip-permissions. Escala, pero estás confiando en una caja negra.',
+        s2_resolution_title: 'Colmena: autonomía con alcance.',
+        s2_resolution_desc_html: 'Cada agente es libre <strong>dentro de su dominio</strong>. El firewall impone los límites. Cada misión tiene un inicio, un fin y una evaluación. Vos mantenés el control — sin ser el cuello de botella.',
+        s2_closing: 'la política es código, la revisión es obligatoria, la confianza se gana.',
+        s3_eyebrow: 'Cómo funciona',
+        s3_heading: 'Un archivo YAML. Un comando. Responsabilidad total.',
+        s3_step1_title: 'Define',
+        s3_step1_desc: 'Escribí un manifiesto YAML. Elegí roles, scope paths, bash patterns, definí un TTL.',
+        s3_step2_title: 'Despliega',
+        s3_step2_desc: 'Un comando lanza el equipo. Cada agente recibe su rol, sus herramientas, sus límites.',
+        s3_step3_title: 'Ejecuta',
+        s3_step3_desc: 'Los agentes trabajan en paralelo. Cada tool call evaluado en <15ms. Audit.log en cada decisión.',
+        s3_step4_title: 'Revisa',
+        s3_step4_desc: 'El auditor califica cada artefacto. El ELO se ajusta. La confianza se gana — no se declara.',
+        s3_history_hint: '¿Ya tenés agentes corriendo? mission init --from-history lee audit.log y propone un manifiesto desde tus patrones.',
+        s5_eyebrow: 'Mejor juntos',
+        s5_heading_html: 'Colmena + Claude Code auto-mode.<br>Capas diferentes. Misma misión.',
+        s5_dim: 'Dimensión', s5_am: 'Auto-Mode', s5_col: 'Colmena',
+        s5_r1_dim: 'Modelo de decisión', s5_r1_am: 'Probabilístico (LLM)', s5_r1_col: 'Determinista (reglas YAML)',
+        s5_r2_dim: 'Costo por llamada', s5_r2_am: 'Tokens del modelo por clasificación', s5_r2_col: 'Cero — sin red, sin LLM',
+        s5_r3_dim: 'Explicabilidad', s5_r3_am: 'Salida opaca del clasificador', s5_r3_col: 'Rule ID en audit.log',
+        s5_r4_dim: 'Alcance', s5_r4_am: 'Intención de un solo agente', s5_r4_col: 'Uno + multi-agente con auditor',
+        s5_r5_dim: 'Accountability', s5_r5_am: 'Por tool call', s5_r5_col: 'Por agente + por rol, ELO en el tiempo',
+        s5_r6_dim: 'Almacenamiento', s5_r6_am: 'En la nube', s5_r6_col: 'Sistema de archivos local (git-versionable)',
+        s5_closing: "Auto-mode detecta intención semántica que las reglas no pueden — intentos de prompt injection, sugerencias de borrado masivo, contexto que el agente no debería tener. Colmena hace cumplir la política que escribiste y mantiene un registro local a prueba de manipulaciones. Usalas juntas. Están diseñadas para eso.",
+        s6_eyebrow: '¿Para quién es?',
+        s6_heading: 'Elegí tu rol. Colmena se adapta.',
+        s6_u1_title: 'Pentest',
+        s6_u1_desc: 'Agentes nativos Caido con alcance definido. Cobertura web + API. Findings store para triage.',
+        s6_u2_title: 'Ciclo de code review',
+        s6_u2_desc: 'Developer → Reviewer → Auditor. El reviewer es solo lectura. Scoring QPC. Seguimiento ELO.',
+        s6_u3_title: 'DevOps kubectl ops',
+        s6_u3_desc: 'kubectl + helm + terraform pre-aprobados. Secrets bloqueados. Operaciones destructivas con puerta.',
+        s6_u4_title: 'SRE ejecución de runbooks',
+        s6_u4_desc: 'Operaciones de lectura pre-aprobadas. Escrituras con puerta. Alertas append-only.',
+        s6_footer: '¿No es tu perfil? Colmena es domínio-agnóstico. Creá tus propios roles y patrones.',
+        s7_eyebrow: 'Empezá en 30 segundos',
+        s7_sub: 'Dos comandos después de instalar. El firewall está activo desde ahora.',
+        s8_eyebrow: '¿Listo para confiar en tu enjambre?',
+        s8_cta_primary: 'Guía de Inicio Rápido →',
+        s8_cta_secondary: 'Estrella en GitHub',
+        s8_cta_tertiary: 'Leé la Documentación →'
       }
     };
 
@@ -308,15 +1297,24 @@
       currentLang = lang;
       localStorage.setItem('colmena-lang', lang);
       document.documentElement.lang = lang;
-      // Translate all [data-i18n] elements
+      // Translate all [data-i18n] elements — prefer <key>_html if present (value props use <strong>)
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
-        if (I18N[lang][key]) el.textContent = I18N[lang][key];
+        const htmlKey = `${key}_html`;
+        if (I18N[lang][htmlKey]) {
+          el.innerHTML = I18N[lang][htmlKey];
+        } else if (I18N[lang][key]) {
+          el.textContent = I18N[lang][key];
+        }
       });
       // If tagline already typed, update instantly
       const taglineEl = document.getElementById('tagline');
       if (taglineEl.textContent.length > 0) {
         taglineEl.textContent = I18N[lang].tagline;
+      }
+      const fnEl = document.getElementById('taglineFunctional');
+      if (fnEl) {
+        fnEl.textContent = I18N[lang].tagline_functional;
       }
       // Toggle button states
       document.querySelectorAll('.lang-toggle button').forEach(b => {
@@ -915,6 +1913,11 @@
         phase = Phase.REVEAL_TAGLINE;
         typeTagline();
       }
+      // reveal functional subtitle after typewriter starts
+      if (phase === Phase.REVEAL_TAGLINE && t >= 7.2) {
+        const el = document.getElementById('taglineFunctional');
+        if (el) el.classList.add('visible');
+      }
       if (phase === Phase.REVEAL_TAGLINE && t >= 8.5) phase = Phase.STEADY;
 
       // Spawn all particles fast
@@ -1038,7 +2041,7 @@
     }, { passive: true });
 
     // === MANIFESTO REVEAL — IntersectionObserver ===
-    const manifestoItems = document.querySelectorAll('.manifesto-line, .repo-link');
+    const manifestoItems = document.querySelectorAll('.manifesto-line, .repo-link, .manifesto-bridge');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, idx) => {
         if (entry.isIntersecting) {
@@ -1048,6 +2051,31 @@
       });
     }, { threshold: 0.2 });
     manifestoItems.forEach(el => observer.observe(el));
+
+    // === CONTENT REVEAL (value props, quickstart, complement note, CTA) ===
+    const contentItems = document.querySelectorAll('.value-row, .quickstart-inner, .complement-inner, .cta-link, .reveal-item');
+    const contentObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, idx) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('revealed'), idx * 120);
+          contentObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    contentItems.forEach(el => contentObserver.observe(el));
+
+    // === NEW SECTIONS REVEAL — IntersectionObserver for all reveal-item elements ===
+    const revealItems = document.querySelectorAll('.reveal-item');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealItems.forEach(el => revealObserver.observe(el));
 
     animate();
   </script>

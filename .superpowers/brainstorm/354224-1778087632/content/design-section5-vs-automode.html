@@ -1,0 +1,80 @@
+<h2>Sección 5: "Colmena vs Auto-Mode" — Complementarios, no competidores</h2>
+<p class="subtitle">Fondo oscuro. Una comparación honesta que posiciona a Colmena como la capa que auto-mode no cubre.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Colmena + Auto-Mode — fondo oscuro (#000)</div>
+  <div class="mockup-body" style="background:#000;color:#F5F0E8;padding:2.5rem;min-height:380px;">
+
+    <div style="text-align:center;margin-bottom:2rem;">
+      <div style="font-family:serif;font-style:italic;color:#B8860B;font-size:0.85rem;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:0.5rem;">Better together</div>
+      <h3 style="font-family:serif;font-size:1.5rem;font-weight:700;">
+        Colmena + Claude Code auto-mode.<br>Different layers. Same mission.
+      </h3>
+    </div>
+
+    <!-- Comparison table -->
+    <div style="max-width:700px;margin:0 auto;overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(212,160,23,0.3);">
+            <th style="text-align:left;padding:0.6rem 0.8rem;color:#B8860B;font-weight:400;font-style:italic;">Dimension</th>
+            <th style="text-align:left;padding:0.6rem 0.8rem;color:rgba(245,240,232,0.5);font-weight:400;">Auto-Mode</th>
+            <th style="text-align:left;padding:0.6rem 0.8rem;color:#D4A017;font-weight:700;">Colmena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(212,160,23,0.08);">
+            <td style="padding:0.6rem 0.8rem;opacity:0.7;">Decision model</td>
+            <td style="padding:0.6rem 0.8rem;opacity:0.5;">Probabilistic (LLM)</td>
+            <td style="padding:0.6rem 0.8rem;color:#D4A017;">Deterministic (YAML rules)</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(212,160,23,0.08);">
+            <td style="padding:0.6rem 0.8rem;opacity:0.7;">Per-call cost</td>
+            <td style="padding:0.6rem 0.8rem;opacity:0.5;">Model tokens per classification</td>
+            <td style="padding:0.6rem 0.8rem;color:#D4A017;">Zero — no network, no LLM</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(212,160,23,0.08);">
+            <td style="padding:0.6rem 0.8rem;opacity:0.7;">Explainability</td>
+            <td style="padding:0.6rem 0.8rem;opacity:0.5;">Classifier output (opaque)</td>
+            <td style="padding:0.6rem 0.8rem;color:#D4A017;">Rule ID in audit.log</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(212,160,23,0.08);">
+            <td style="padding:0.6rem 0.8rem;opacity:0.7;">Scope</td>
+            <td style="padding:0.6rem 0.8rem;opacity:0.5;">Single-agent intent</td>
+            <td style="padding:0.6rem 0.8rem;color:#D4A017;">Single + multi-agent with auditor</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(212,160,23,0.08);">
+            <td style="padding:0.6rem 0.8rem;opacity:0.7;">Accountability</td>
+            <td style="padding:0.6rem 0.8rem;opacity:0.5;">Per tool call</td>
+            <td style="padding:0.6rem 0.8rem;color:#D4A017;">Per agent + per role, ELO over time</td>
+          </tr>
+          <tr>
+            <td style="padding:0.6rem 0.8rem;opacity:0.7;">Storage</td>
+            <td style="padding:0.6rem 0.8rem;opacity:0.5;">Cloud-side</td>
+            <td style="padding:0.6rem 0.8rem;color:#D4A017;">Local filesystem (git-versionable)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bottom takeaway -->
+    <div style="text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(212,160,23,0.15);max-width:550px;margin-left:auto;margin-right:auto;">
+      <p style="font-size:0.9rem;line-height:1.6;opacity:0.7;">
+        <strong style="color:#D4A017;">Auto-mode</strong> catches semantic intent the rule base can't — prompt injection, mass-delete nudges, context the agent shouldn't have.<br><br>
+        <strong style="color:#D4A017;">Colmena</strong> enforces the policy you wrote and keeps a tamper-evident local record.<br><br>
+        <span style="font-family:serif;font-style:italic;color:#B8860B;">Use them together. They're designed to be.</span>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top:1.5rem;">
+  <h3>Diseño</h3>
+  <ul>
+    <li><strong>Fondo oscuro</strong> — ritmo visual (alterna con la sección clara anterior)</li>
+    <li><strong>Tabla comparativa limpia</strong> — 6 dimensiones, sin densidad excesiva</li>
+    <li><strong>Colmena en dorado</strong> — jerarquía visual clara en cada fila</li>
+    <li><strong>Cierre narrativo:</strong> "Use them together. They're designed to be." — honesto, no combativo</li>
+  </ul>
+</div>

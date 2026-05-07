@@ -1,0 +1,84 @@
+<h2>Sección 3 (final): "How It Works" con Mission Manifest integrado</h2>
+<p class="subtitle">El paso 1 "Define" ahora muestra el YAML real + todo lo que desbloquea.</p>
+
+<div class="mockup">
+  <div class="mockup-header">How It Works — fondo oscuro (#000)</div>
+  <div class="mockup-body" style="background:#000;color:#F5F0E8;padding:2.5rem;min-height:400px;">
+
+    <div style="text-align:center;margin-bottom:2rem;">
+      <div style="font-family:serif;font-style:italic;color:#B8860B;font-size:0.85rem;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:0.5rem;">How it works</div>
+      <h3 style="font-family:serif;font-size:1.5rem;font-weight:700;">One YAML file. One command. Full accountability.</h3>
+    </div>
+
+    <!-- Step 1: EXPANDED with manifest -->
+    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:0.8rem;max-width:900px;margin:0 auto 1.5rem;align-items:start;">
+
+      <!-- Step 1 expanded -->
+      <div style="border:1px solid rgba(212,160,23,0.35);border-radius:4px;padding:1rem;background:rgba(212,160,23,0.04);">
+        <div style="font-family:serif;font-style:italic;color:#D4A017;font-size:1.3rem;margin-bottom:0.3rem;">1. Define</div>
+        <p style="font-size:0.75rem;opacity:0.6;line-height:1.4;margin-bottom:0.6rem;">
+          Write a YAML manifest. Pick roles, scope paths, bash patterns, set a TTL.
+        </p>
+        <!-- Mini YAML preview -->
+        <div style="background:rgba(10,8,0,0.6);border:1px solid rgba(212,160,23,0.2);border-radius:2px;padding:0.5rem 0.6rem;font-family:mono;font-size:0.6rem;line-height:1.5;color:rgba(245,240,232,0.75);margin-bottom:0.5rem;">
+          <span style="color:#B8860B;">mission:</span> review-auth<br>
+          <span style="color:#B8860B;">pattern:</span> code-review-cycle<br>
+          <span style="color:#B8860B;">roles:</span><br>
+          &nbsp;&nbsp;<span style="color:#B8860B;">- name:</span> developer<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">scope:</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">paths:</span> [src/auth/]<br>
+          &nbsp;&nbsp;<span style="color:#B8860B;">- name:</span> auditor<br>
+        </div>
+        <div style="font-size:0.65rem;opacity:0.35;line-height:1.4;">
+          ✓ Auto-validates<br>
+          ✓ Generates prompts<br>
+          ✓ Creates delegations<br>
+          ✓ --dry-run preview
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div style="text-align:center;padding:1rem 0.6rem;border:1px solid rgba(212,160,23,0.1);border-radius:4px;">
+        <div style="font-family:serif;font-style:italic;color:#D4A017;font-size:1.3rem;margin-bottom:0.3rem;">2. Spawn</div>
+        <p style="font-size:0.75rem;opacity:0.5;line-height:1.4;">
+          One command spawns the squad. Each agent gets its role, its tools, its boundaries.
+        </p>
+        <div style="margin-top:0.4rem;font-family:mono;font-size:0.6rem;color:#B8860B;">
+          colmena mission spawn
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div style="text-align:center;padding:1rem 0.6rem;border:1px solid rgba(212,160,23,0.1);border-radius:4px;">
+        <div style="font-family:serif;font-style:italic;color:#D4A017;font-size:1.3rem;margin-bottom:0.3rem;">3. Execute</div>
+        <p style="font-size:0.75rem;opacity:0.5;line-height:1.4;">
+          Agents work in parallel. Every tool call evaluated in &lt;15ms. Audit.log on every decision.
+        </p>
+        <div style="margin-top:0.4rem;font-family:mono;font-size:0.6rem;color:#B8860B;">
+          ALLOW · ASK · BLOCK
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div style="text-align:center;padding:1rem 0.6rem;border:1px solid rgba(212,160,23,0.1);border-radius:4px;">
+        <div style="font-family:serif;font-style:italic;color:#D4A017;font-size:1.3rem;margin-bottom:0.3rem;">4. Review</div>
+        <p style="font-size:0.75rem;opacity:0.5;line-height:1.4;">
+          Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.
+        </p>
+        <div style="margin-top:0.4rem;font-family:mono;font-size:0.6rem;color:#B8860B;">
+          QPC scoring
+        </div>
+      </div>
+    </div>
+
+    <!-- Smart init hint -->
+    <div style="text-align:center;opacity:0.3;font-size:0.72rem;margin-top:0.8rem;">
+      Already running agents? <code style="color:#B8860B;">mission init --from-history</code> reads audit.log and proposes a manifest from your patterns.
+    </div>
+
+    <!-- Connecting line -->
+    <div style="text-align:center;margin-top:1rem;opacity:0.25;">
+      <span style="font-family:mono;font-size:0.7rem;">Define → Spawn → Execute → Review → repeat, with better trust each cycle</span>
+    </div>
+  </div>
+</div>

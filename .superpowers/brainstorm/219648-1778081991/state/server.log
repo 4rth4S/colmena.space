@@ -1,0 +1,13 @@
+{"type":"server-started","port":65242,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:65242","screen_dir":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content","state_dir":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/state"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/layout-approach.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/visual-direction.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/waiting.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/content-architecture.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/design-section1.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/tagline-options.html"}
+{"source":"user-event","type":"click","text":"A\n    \n      \"Define missions. Enforce policy. Earn trust. All local.\"\n      4 verbos → 4 capacidades clave. Ritmo corto, memorable.","choice":"a","id":null,"timestamp":1778083874651}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/design-section2.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/design-section2-v2.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/design-section3.html"}
+{"type":"screen-added","file":"/home/fr33m4n/Documents/colmena-docs-on-the-fly/colmena-landing/.superpowers/brainstorm/219648-1778081991/content/design-section4-valueprops.html"}
+{"type":"server-stopped","reason":"idle timeout"}

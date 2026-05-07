@@ -1,0 +1,68 @@
+<h2>Feature destacada: Mission Manifest YAML</h2>
+<p class="subtitle">PRs #62 + #63 merged. Esto es lo que hace "plug & play" real. Propongo una subsección visual dentro de "How It Works".</p>
+
+<div class="mockup">
+  <div class="mockup-header">Mission Manifest — insertado en "How It Works" (paso 1: Define), fondo oscuro</div>
+  <div class="mockup-body" style="background:#000;color:#F5F0E8;padding:2rem;min-height:320px;">
+
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="font-family:serif;font-style:italic;color:#B8860B;font-size:0.8rem;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:0.5rem;">The plug &amp; play layer</div>
+      <h3 style="font-family:serif;font-size:1.4rem;font-weight:700;">
+        One YAML file. One command. Full mission.
+      </h3>
+      <p style="font-size:0.85rem;opacity:0.55;max-width:520px;margin:0.5rem auto 0;">
+        Define roles, scope, bash patterns, TTL, and acceptance criteria in a manifest.<br>Colmena handles validation, agent spawning, delegations, and the review cycle.
+      </p>
+    </div>
+
+    <!-- Left: manifest YAML preview, Right: what it gives you -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:720px;margin:0 auto;">
+
+      <!-- YAML preview -->
+      <div style="background:rgba(20,15,0,0.5);border:1px solid rgba(212,160,23,0.2);border-radius:4px;padding:1rem;font-family:mono;font-size:0.7rem;line-height:1.6;color:rgba(245,240,232,0.8);">
+        <span style="color:#B8860B;">mission:</span> review-auth-module<br>
+        <span style="color:#B8860B;">pattern:</span> code-review-cycle<br>
+        <span style="color:#B8860B;">ttl_hours:</span> 4<br><br>
+        <span style="color:#B8860B;">roles:</span><br>
+        &nbsp;&nbsp;<span style="color:#B8860B;">- name:</span> developer<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">task:</span> harden auth<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">scope:</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">paths:</span> [src/auth/]<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">bash_patterns:</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">-</span> ^cargo (test|build)<br>
+        &nbsp;&nbsp;<span style="color:#B8860B;">- name:</span> auditor<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#B8860B;">task:</span> review + score<br>
+      </div>
+
+      <!-- What it unlocks -->
+      <div style="font-size:0.82rem;line-height:1.7;opacity:0.7;">
+        <div style="margin-bottom:0.5rem;"><span style="color:#D4A017;">&#x2713;</span> Auto-validates schema + security</div>
+        <div style="margin-bottom:0.5rem;"><span style="color:#D4A017;">&#x2713;</span> Generates role prompts + subagent files</div>
+        <div style="margin-bottom:0.5rem;"><span style="color:#D4A017;">&#x2713;</span> Creates scoped delegations with mandatory TTL</div>
+        <div style="margin-bottom:0.5rem;"><span style="color:#D4A017;">&#x2713;</span> Wires bash_patterns into runtime overrides</div>
+        <div style="margin-bottom:0.5rem;"><span style="color:#D4A017;">&#x2713;</span> Activates mission gate automatically</div>
+        <div style="margin-bottom:0.5rem;"><span style="color:#D4A017;">&#x2713;</span> <code style="color:#B8860B;">--dry-run</code> to preview before executing</div>
+      </div>
+    </div>
+
+    <!-- Smart init callout -->
+    <div style="text-align:center;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid rgba(212,160,23,0.1);max-width:600px;margin-left:auto;margin-right:auto;">
+      <p style="font-size:0.8rem;opacity:0.45;margin-bottom:0.4rem;">
+        Already running agents? <code style="color:#B8860B;">mission init --from-history</code> reads your audit.log and proposes a manifest skeleton from your actual usage patterns.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top:1.5rem;">
+  <h3>Cómo integrarlo</h3>
+  <ul>
+    <li><strong>Dentro de "How It Works" — paso 1 (Define):</strong> Expande la columna "Define" con un mini-preview del YAML y los bullets de lo que desbloquea</li>
+    <li><strong>Alternativa:</strong> Subsección dedicada justo después de "How It Works" con más detalle</li>
+    <li><strong>Value props:</strong> La bullet "Mission Manifest YAML — define once, spawn anywhere" ya está en la categoría Multi-Agent, pero podemos darle más peso</li>
+  </ul>
+  <p style="margin-top:1rem;font-size:0.85rem;opacity:0.7;">
+    <strong>Recomiendo:</strong> Expande el paso 1 en "How It Works" para mostrar el YAML como el artefacto concreto de "Define". Es más potente que solo texto. Y mantener la bullet en value props como está.
+  </p>
+</div>

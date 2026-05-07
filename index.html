@@ -560,6 +560,14 @@
       color: var(--gold-dark);
     }
 
+    .vp-bullet code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.88em;
+      background: rgba(0,0,0,0.06);
+      padding: 0.1em 0.3em;
+      border-radius: 2px;
+    }
+
     /* Comparison table (Colmena vs Auto-Mode) */
     .compare-table-wrap {
       max-width: 720px;
@@ -933,7 +941,7 @@ roles:
           <div class="vp-bullet-grid">
             <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b1">Deterministic YAML rules + compiled regex engine</span></div>
             <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b2">&lt;15ms hot path — zero LLM calls, zero per-call cost</span></div>
-            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b3">Shell chain guard — blocks &amp;&amp;, ||, ;, $(), backticks</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b3">Shell chain guard — blocks <code>&&</code>, <code>||</code>, <code>;</code>, <code>$()</code>, backticks</span></div>
             <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b4">Mission kill-switch — instant revocation of all delegations</span></div>
           </div>
         </div>
@@ -1133,7 +1141,7 @@ roles:
         s4_cat1_title: 'Firewall & Policy',
         s4_cat1_b1: 'Deterministic YAML rules + compiled regex engine',
         s4_cat1_b2: '<15ms hot path — zero LLM calls, zero per-call cost',
-        s4_cat1_b3: 'Shell chain guard — blocks &&, ||, ;, $(), backticks',
+        s4_cat1_b3_html: 'Shell chain guard — blocks <code>&&</code>, <code>||</code>, <code>;</code>, <code>$()</code>, backticks',
         s4_cat1_b4: 'Mission kill-switch — instant revocation of all delegations',
         s4_cat2_title: 'Multi-Agent Missions',
         s4_cat2_b1: 'One-command squad spawn with scoped autonomy',
@@ -1217,7 +1225,7 @@ roles:
         s4_cat1_title: 'Firewall y Política',
         s4_cat1_b1: 'Reglas YAML deterministas + motor de regex compilado',
         s4_cat1_b2: '<15ms en hot path — cero llamadas LLM, cero costo por llamada',
-        s4_cat1_b3: 'Chain guard del shell — bloquea &&, ||, ;, $(), backticks',
+        s4_cat1_b3_html: 'Chain guard del shell — bloquea <code>&&</code>, <code>||</code>, <code>;</code>, <code>$()</code>, backticks',
         s4_cat1_b4: 'Kill-switch de misión — revocación instantánea de todas las delegaciones',
         s4_cat2_title: 'Misiones Multi-Agente',
         s4_cat2_b1: 'Despliegue de equipos con un comando y autonomía acotada',

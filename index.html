@@ -277,7 +277,7 @@
     .section-light {
       position: relative;
       z-index: 5;
-      background: var(--bone);
+      background: #E8DDD0;
       color: #1a1a1a;
     }
 
@@ -285,15 +285,15 @@
     .fade-dark-to-light {
       position: relative;
       z-index: 5;
-      height: 8vh;
-      background: linear-gradient(to bottom, var(--black), var(--bone));
+      height: 12vh;
+      background: linear-gradient(to bottom, var(--black), #E8DDD0);
     }
 
     .fade-light-to-dark {
       position: relative;
       z-index: 5;
-      height: 8vh;
-      background: linear-gradient(to bottom, var(--bone), var(--black));
+      height: 12vh;
+      background: linear-gradient(to bottom, #E8DDD0, var(--black));
     }
 
     .section-pad {
@@ -343,18 +343,21 @@
 
     .cta-primary {
       display: inline-block;
-      background: var(--gold-dark);
-      color: var(--black);
-      padding: 0.75rem 2.2rem;
+      background: transparent;
+      color: var(--gold-dark);
+      padding: 0.7rem 2rem;
       text-decoration: none;
       font-family: 'Playfair Display', serif;
       font-weight: 700;
       font-size: clamp(0.9rem, 1.8vw, 1.05rem);
       letter-spacing: 0.08em;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      border: 1.5px solid var(--gold-dark);
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .cta-primary:hover {
+      background: var(--gold-dark);
+      color: var(--black);
       box-shadow: 0 0 24px rgba(212,160,23,0.3);
     }
 
@@ -367,14 +370,15 @@
       font-family: 'Playfair Display', serif;
       font-size: clamp(0.85rem, 1.6vw, 0.95rem);
       letter-spacing: 0.08em;
-      padding-bottom: 0.2rem;
-      border-bottom: 1px solid rgba(212,160,23,0.3);
-      transition: color 0.3s ease, border-color 0.3s ease;
+      padding: 0.6rem 1.5rem;
+      border: 1px solid rgba(212,160,23,0.3);
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
     }
 
     .cta-secondary:hover {
-      color: var(--bone);
+      color: var(--gold-dark);
       border-color: var(--gold-dark);
+      background: rgba(212,160,23,0.08);
     }
 
     .cta-subtle {
@@ -670,14 +674,19 @@
       transform: translateY(0);
     }
 
-    /* Hero CTA group */
-    .hero-cta-group {
-      margin-top: 2rem;
+    /* Hero CTA bar — below hexagon, fixed at bottom of viewport */
+    .hero-cta-bar {
+      position: fixed;
+      bottom: 4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
       display: flex;
       gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
       align-items: center;
+      pointer-events: auto;
     }
 
     /* Manifesto bridge paragraph */
@@ -750,7 +759,7 @@
         padding: 0.4rem 0.5rem;
       }
 
-      .hero-cta-group {
+      .hero-cta-bar {
         flex-direction: column;
         gap: 0.6rem;
       }
@@ -780,12 +789,14 @@
     <h1 class="title" id="title">COLMENA</h1>
     <p class="tagline" id="tagline"></p>
     <p class="tagline-functional" id="taglineFunctional" data-i18n="tagline_functional"></p>
-    <div class="hero-cta-group">
-      <a href="#quickstart" class="cta-primary" data-i18n="cta_quickstart">Quick Start</a>
-      <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="cta-secondary" data-i18n="cta_star">★ Star on GitHub</a>
-      <span class="cta-divider">|</span>
-      <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="cta_docs">Read the Docs →</a>
-    </div>
+  </div>
+
+  <!-- Hero CTAs — below the hexagon, above the fold -->
+  <div class="hero-cta-bar">
+    <a href="#quickstart" class="cta-primary" data-i18n="cta_quickstart">Quick Start</a>
+    <a href="https://github.com/4rth4s/colmena" target="_blank" rel="noopener" class="cta-secondary" data-i18n="cta_star">★ Star on GitHub</a>
+    <span class="cta-divider">|</span>
+    <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="cta_docs">Read the Docs →</a>
   </div>
 
   <!-- Scroll indicator -->
@@ -1162,7 +1173,7 @@ roles:
         s3_step4_desc: 'Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.',
         s3_history_hint: 'Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.',
         s5_eyebrow: 'Better together',
-        s5_heading: 'Colmena + Claude Code auto-mode.<br>Different layers. Same mission.',
+        s5_heading_html: 'Colmena + Claude Code auto-mode.<br>Different layers. Same mission.',
         s5_dim: 'Dimension', s5_am: 'Auto-Mode', s5_col: 'Colmena',
         s5_r1_dim: 'Decision model', s5_r1_am: 'Probabilistic (LLM)', s5_r1_col: 'Deterministic (YAML rules)',
         s5_r2_dim: 'Per-call cost', s5_r2_am: 'Model tokens per classification', s5_r2_col: 'Zero — no network, no LLM',
@@ -1246,7 +1257,7 @@ roles:
         s3_step4_desc: 'El auditor califica cada artefacto. El ELO se ajusta. La confianza se gana — no se declara.',
         s3_history_hint: '¿Ya tenés agentes corriendo? mission init --from-history lee audit.log y propone un manifiesto desde tus patrones.',
         s5_eyebrow: 'Mejor juntos',
-        s5_heading: 'Colmena + Claude Code auto-mode.<br>Capas diferentes. Misma misión.',
+        s5_heading_html: 'Colmena + Claude Code auto-mode.<br>Capas diferentes. Misma misión.',
         s5_dim: 'Dimensión', s5_am: 'Auto-Mode', s5_col: 'Colmena',
         s5_r1_dim: 'Modelo de decisión', s5_r1_am: 'Probabilístico (LLM)', s5_r1_col: 'Determinista (reglas YAML)',
         s5_r2_dim: 'Costo por llamada', s5_r2_am: 'Tokens del modelo por clasificación', s5_r2_col: 'Cero — sin red, sin LLM',
@@ -2016,6 +2027,7 @@ roles:
     // Fade hero elements as user scrolls past hero section
     const heroCanvas = document.getElementById('swarm');
     const heroContent = document.querySelector('.content');
+    const heroCtaBar = document.querySelector('.hero-cta-bar');
     window.addEventListener('scroll', () => {
       const hint = document.getElementById('scrollHint');
       if (hint && window.scrollY > 50) hint.classList.remove('visible');
@@ -2026,6 +2038,7 @@ roles:
       const opacity = 1 - fadeProgress;
       heroCanvas.style.opacity = opacity;
       heroContent.style.opacity = opacity;
+      if (heroCtaBar) heroCtaBar.style.opacity = opacity;
     }, { passive: true });
 
     // === MANIFESTO REVEAL — IntersectionObserver ===

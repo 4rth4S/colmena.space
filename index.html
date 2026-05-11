@@ -919,7 +919,9 @@ roles:
           </div>
         </div>
 
-        <p class="reveal-item" style="text-align:center;margin-top:1.2rem;font-size:0.75rem;opacity:0.35;color:var(--bone);" data-i18n="s3_history_hint">Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.</p>
+        <p class="reveal-item" style="text-align:center;margin-top:0.8rem;font-size:0.82rem;opacity:0.55;color:var(--gold-dark);" data-i18n="s3_auto_spawn_hint">Pro tip: add --auto-spawn to generate a Mission Lead that orchestrates all workers from a single Agent prompt.</p>
+
+<p class="reveal-item" style="text-align:center;margin-top:0.6rem;font-size:0.75rem;opacity:0.35;color:var(--bone);" data-i18n="s3_history_hint">Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.</p>
 
         <p class="reveal-item" style="text-align:center;margin-top:1rem;opacity:0.25;font-family:monospace;font-size:0.75rem;color:var(--bone);">Define → Spawn → Execute → Review → repeat, with better trust each cycle</p>
       </div>
@@ -941,7 +943,7 @@ roles:
           <div class="vp-bullet-grid">
             <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b1">Deterministic YAML rules + compiled regex engine</span></div>
             <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b2">&lt;15ms hot path — zero LLM calls, zero per-call cost</span></div>
-            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b3">Shell chain guard — blocks <code>&&</code>, <code>||</code>, <code>;</code>, <code>$()</code>, backticks</span></div>
+            <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b3">Shell chain guard — splits Bash chains (<code>&amp;&amp;</code>, <code>||</code>, <code>;</code>, <code>|</code>) and evaluates each piece independently</span></div>
             <div class="vp-bullet"><span class="vp-bullet-dot">&#8226;</span> <span data-i18n="s4_cat1_b4">Mission kill-switch — instant revocation of all delegations</span></div>
           </div>
         </div>
@@ -1096,7 +1098,7 @@ roles:
       <div class="section-inner" style="max-width:720px;">
         <div class="section-eyebrow reveal-item" data-i18n="s7_eyebrow">Start in 30 seconds</div>
 
-        <pre class="quickstart-code reveal-item"><span class="prompt">$</span>cargo install colmena-cli colmena-mcp
+        <pre class="quickstart-code reveal-item"><span class="prompt">$</span>cargo install colmena
 <span class="prompt">$</span>colmena setup
 <span class="prompt">$</span>colmena doctor</pre>
 
@@ -1115,7 +1117,9 @@ roles:
           <span data-i18n="s8_cta_secondary">Star Colmena on GitHub</span>
         </a>
         <span class="cta-divider">|</span>
-        <a href="https://github.com/4rth4s/colmena#readme" target="_blank" rel="noopener" class="cta-subtle" data-i18n="s8_cta_tertiary">Read the Docs →</a>
+        <a href="https://docs.colmena.space" target="_blank" class="cta-subtle" data-i18n="s8_cta_tertiary">Read the Docs →</a>
+        <span class="cta-divider">|</span>
+        <a href="https://crates.io/crates/colmena" target="_blank" rel="noopener" class="cta-subtle" data-i18n="s8_cta_crates">crates.io →</a>
       </div>
     </div>
   </section>
@@ -1140,12 +1144,12 @@ roles:
         s4_cat1_title: 'Firewall & Policy',
         s4_cat1_b1: 'Deterministic YAML rules + compiled regex engine',
         s4_cat1_b2: '<15ms hot path — zero LLM calls, zero per-call cost',
-        s4_cat1_b3_html: 'Shell chain guard — blocks <code>&&</code>, <code>||</code>, <code>;</code>, <code>$()</code>, backticks',
+        s4_cat1_b3_html: 'Shell chain guard — splits Bash chains (<code>&amp;&amp;</code>, <code>||</code>, <code>;</code>, <code>|</code>) and evaluates each piece independently',
         s4_cat1_b4: 'Mission kill-switch — instant revocation of all delegations',
         s4_cat2_title: 'Multi-Agent Missions',
         s4_cat2_b1: 'One-command squad spawn with scoped autonomy',
-        s4_cat2_b2: '11 orchestration patterns + 7 topologies',
-        s4_cat2_b3: '15 built-in roles — pentest, dev, devops, SRE, reviewer...',
+        s4_cat2_b2: '13 orchestration patterns + 7 topologies',
+        s4_cat2_b3: '23 built-in roles — pentest, dev, devops, SRE, reviewer...',
         s4_cat2_b4: 'Mission Manifest YAML — define once, spawn anywhere',
         s4_cat3_title: 'Trust & Accountability',
         s4_cat3_b1: 'Mandatory auditor review — no artifact ships unreviewed',
@@ -1180,6 +1184,7 @@ roles:
         s3_step4_title: 'Review',
         s3_step4_desc: 'Auditor scores every artifact. ELO adjusts. Trust is earned — not declared.',
         s3_history_hint: 'Already running agents? mission init --from-history reads audit.log and proposes a manifest from your patterns.',
+        s3_auto_spawn_hint: 'Pro tip: add --auto-spawn to generate a Mission Lead that orchestrates all workers from a single Agent prompt.',
         s5_eyebrow: 'Better together',
         s5_heading_html: 'Colmena + Claude Code auto-mode.<br>Different layers. Same mission.',
         s5_dim: 'Dimension', s5_am: 'Auto-Mode', s5_col: 'Colmena',
@@ -1206,7 +1211,8 @@ roles:
         s8_eyebrow: 'Ready to trust your swarm?',
         s8_cta_primary: 'Quick Start Guide →',
         s8_cta_secondary: 'Star Colmena on GitHub',
-        s8_cta_tertiary: 'Read the Docs →'
+        s8_cta_tertiary: 'Read the Docs →',
+        s8_cta_crates: 'crates.io →'
       },
       es: {
         tagline: 'El enjambre aprende donde picar.',
@@ -1224,12 +1230,12 @@ roles:
         s4_cat1_title: 'Firewall & Política',
         s4_cat1_b1: 'Reglas YAML deterministas + motor de regex compilado',
         s4_cat1_b2: '<15ms en hot path — cero llamadas LLM, cero costo por llamada',
-        s4_cat1_b3_html: 'Chain guard del shell — bloquea <code>&&</code>, <code>||</code>, <code>;</code>, <code>$()</code>, backticks',
+        s4_cat1_b3_html: 'Chain guard del shell — divide cadenas Bash (<code>&amp;&amp;</code>, <code>||</code>, <code>;</code>, <code>|</code>) y evalúa cada pieza independientemente',
         s4_cat1_b4: 'Kill-switch de misión — revocación instantánea de todas las delegaciones',
         s4_cat2_title: 'Misiones Multi-Agente',
         s4_cat2_b1: 'Despliegue de equipos con un comando y autonomía acotada',
-        s4_cat2_b2: '11 patrones de orquestación + 7 topologías',
-        s4_cat2_b3: '15 roles predefinidos — pentest, dev, devops, SRE, reviewer...',
+        s4_cat2_b2: '13 patrones de orquestación + 7 topologías',
+        s4_cat2_b3: '23 roles predefinidos — pentest, dev, devops, SRE, reviewer...',
         s4_cat2_b4: 'Mission Manifest YAML — definí una vez, desplegá donde quieras',
         s4_cat3_title: 'Confianza & Accountability',
         s4_cat3_b1: 'Revisión de auditoría obligatoria — nada se publica sin revisión',
@@ -1264,6 +1270,7 @@ roles:
         s3_step4_title: 'Revisa',
         s3_step4_desc: 'El auditor califica cada artefacto. El ELO se ajusta. La confianza se gana — no se declara.',
         s3_history_hint: '¿Ya tenés agentes corriendo? mission init --from-history lee audit.log y propone un manifiesto desde tus patrones.',
+        s3_auto_spawn_hint: 'Tip: agregá --auto-spawn para generar un Mission Lead que orquesta todos los workers desde un solo prompt.',
         s5_eyebrow: 'Mejor juntos',
         s5_heading_html: 'Colmena + Claude Code auto-mode.<br>Capas diferentes. Misma misión.',
         s5_dim: 'Dimensión', s5_am: 'Auto-Mode', s5_col: 'Colmena',
@@ -1290,7 +1297,8 @@ roles:
         s8_eyebrow: '¿Listo para confiar en tu enjambre?',
         s8_cta_primary: 'Guía de Inicio Rápido →',
         s8_cta_secondary: 'Estrella en GitHub',
-        s8_cta_tertiary: 'Leé la Documentación →'
+        s8_cta_tertiary: 'Leé la Documentación →',
+        s8_cta_crates: 'crates.io →'
       }
     };
 
